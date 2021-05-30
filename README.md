@@ -1,5 +1,57 @@
 # My Freqtrade strategies and config
 
+## How to optimise parameter
+
+```bash
+git clone -b develop https://github.com/freqtrade/freqtrade.git
+cd freqtrade
+./setup.sh --install
+
+# create profile
+freqtrade new-config --config user_data/config.json
+
+# change config pairs manual
+# download data
+freqtrade download-data --exchange binance -t 5m --days 40
+
+# use hyperopt to optimise parameters
+freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy roi trailing sell --strategy GodStraNew
+
+# update parameters to default config inside strategy python file
+# update minimal_roi and trailing_stop to config
+
+# backtesting
+freqtrade backtesting --strategy GodStraNew --timeframe 5m
+
+# or compare list
+freqtrade backtesting --strategy-list GodStraNew20 GodStraNew30 GodStraNew40 --timeframe 5m
+```
+
+## How to run (docker)
+
+```sh
+mkdir ft_userdata
+cd ft_userdata/
+# Download the docker-compose file from the repository
+curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
+
+# Pull the freqtrade image
+docker-compose pull
+
+# Create user directory structure
+docker-compose run --rm freqtrade create-userdir --userdir user_data
+
+# Create configuration - Requires answering interactive questions
+docker-compose run --rm freqtrade new-config --config user_data/config.json
+
+# add credential and configs
+# add strategies
+# edit docker-compose.yml CMD to change strategy
+
+# run via docker-compose
+docker-compose up -d
+```
+
 ## Configs
 
 ### Using minimal roi
