@@ -91,13 +91,13 @@
     "process_throttle_secs": 5
   },
   "minimal_roi": {
-    "0": 0.177,
-    "12": 0.064,
-    "63": 0.023,
-    "110": 0
+    "0": 0.16,
+    "21": 0.037,
+    "64": 0.012,
+    "178": 0
   },
   "trailing_stop": true,
-  "trailing_stop_positive": 0.173,
-  "trailing_stop_positive_offset": 0.241,
+  "trailing_stop_positive": 0.079,
+  "trailing_stop_positive_offset": 0.156,
   "trailing_only_offset_is_reached": true
 }

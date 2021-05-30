@@ -66,11 +66,11 @@ but for testing no minimal_roi is probably the best
 
 ```json
 "minimal_roi": {
-    "0": 0.177,
-    "12": 0.064,
-    "63": 0.023,
-    "110": 0
-},
+    "0": 0.16,
+    "21": 0.037,
+    "64": 0.012,
+    "178": 0
+}
 ```
 
 ### Trailing stop
