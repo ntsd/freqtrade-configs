@@ -1,0 +1,50 @@
+Best result:
+
+*   15/100:    908 trades. 327/579/2 Wins/Draws/Losses. Avg profit   0.67%. Median profit   0.00%. Total profit  6255.19516831 BTC ( 625.52%). Avg duration 3 days, 1:44:00 min. Objective: 1.18490
+
+
+    # Buy hyperspace params:
+    buy_params = {
+        "buy_crossed_indicator0": "SMA-110",  # value loaded from strategy
+        "buy_crossed_indicator1": "SMA-15",  # value loaded from strategy
+        "buy_crossed_indicator2": "SMA-6",  # value loaded from strategy
+        "buy_indicator0": "SMA-100",  # value loaded from strategy
+        "buy_indicator1": "SMA-12",  # value loaded from strategy
+        "buy_indicator2": "SMA-110",  # value loaded from strategy
+        "buy_operator0": "<R",  # value loaded from strategy
+        "buy_operator1": "/>R",  # value loaded from strategy
+        "buy_operator2": "CA",  # value loaded from strategy
+        "buy_real_num0": 0.2,  # value loaded from strategy
+        "buy_real_num1": 0.5,  # value loaded from strategy
+        "buy_real_num2": 1.0,  # value loaded from strategy
+    }
+
+    # Sell hyperspace params:
+    sell_params = {
+        "sell_crossed_indicator0": "SMA-55",  # value loaded from strategy
+        "sell_crossed_indicator1": "SMA-50",  # value loaded from strategy
+        "sell_crossed_indicator2": "SMA-50",  # value loaded from strategy
+        "sell_indicator0": "SMA-5",  # value loaded from strategy
+        "sell_indicator1": "SMA-5",  # value loaded from strategy
+        "sell_indicator2": "SMA-6",  # value loaded from strategy
+        "sell_operator0": "CDT",  # value loaded from strategy
+        "sell_operator1": "/=R",  # value loaded from strategy
+        "sell_operator2": "COT",  # value loaded from strategy
+        "sell_real_num0": 0.8,  # value loaded from strategy
+        "sell_real_num1": 0.9,  # value loaded from strategy
+        "sell_real_num2": 0.1,  # value loaded from strategy
+    }
+
+    # ROI table:
+    minimal_roi = {
+        "0": 0.152,
+        "32": 0.103,
+        "89": 0.039,
+        "203": 0
+    }
+
+    # Trailing stop:
+    trailing_stop = True
+    trailing_stop_positive = 0.278
+    trailing_stop_positive_offset = 0.375
+    trailing_only_offset_is_reached = True

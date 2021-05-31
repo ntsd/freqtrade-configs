@@ -16,12 +16,12 @@ freqtrade download-data --exchange binance -t 5m --days 40
 
 # use hyperopt to optimise strategy parameters by buy and sell signal
 # read this for the loss function https://www.freqtrade.io/en/stable/hyperopt/#loss-functions
-freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --strategy GodStraNew
+freqtrade hyperopt --hyperopt-loss ShortTradeDurHyperOptLoss --spaces buy sell --strategy GodStraNew
 
 # update parameters to default config inside strategy python file
 
 # use hyperopt to optimise roi and trailing configs parameters
-freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces roi trailing --strategy GodStraNew
+freqtrade hyperopt --hyperopt-loss ShortTradeDurHyperOptLoss --spaces roi trailing --strategy GodStraNew
 
 # update minimal_roi and trailing_stop to config
 
