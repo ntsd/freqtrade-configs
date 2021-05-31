@@ -41,7 +41,6 @@
       "rateLimit": 200
     },
     "pair_whitelist": [
-      "IOTA/BTC",
       "ETH/BTC",
       "BNB/BTC",
       "DOGE/BTC",
@@ -49,10 +48,7 @@
       "DOT/BTC",
       "ADA/BTC",
       "XRP/BTC",
-      "LINK/BTC",
-      "ETH/BTC",
-      "BNB/BTC",
-      "DOGE/BTC"
+      "LINK/BTC"
     ],
     "pair_blacklist": []
   },

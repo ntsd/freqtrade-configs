@@ -41,7 +41,6 @@
       "rateLimit": 200
     },
     "pair_whitelist": [
-      "IOTA/BTC",
       "ETH/BTC",
       "BNB/BTC",
       "DOGE/BTC",

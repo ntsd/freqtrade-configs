@@ -81,3 +81,38 @@ but for testing no minimal_roi is probably the best
 "trailing_stop_positive_offset": 0.156,
 "trailing_only_offset_is_reached": true
 ```
+
+### Pair list
+
+ref <https://www.freqtrade.io/en/stable/includes/pairlists/>
+
+example
+
+```json
+"exchange": {
+    "pair_whitelist": [],
+    "pair_blacklist": [
+        ".*BEAR/BTC",
+        ".*BULL/BTC",
+        ".*UP/BTC",
+        ".*DOWN/BTC",
+        ".*HEDGE/BTC",
+    ]
+},
+"pairlists": [
+    {
+        "method": "VolumePairList",
+        "number_assets": 10,
+        "sort_key": "quoteVolume"
+    },
+    {"method": "AgeFilter", "min_days_listed": 10},
+    {"method": "PrecisionFilter"},
+    {
+        "method": "RangeStabilityFilter",
+        "lookback_days": 10,
+        "min_rate_of_change": 0.01,
+        "refresh_period": 1440
+    },
+    {"method": "ShuffleFilter"}
+],
+```
