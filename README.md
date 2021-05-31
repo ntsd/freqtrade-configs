@@ -108,6 +108,12 @@ example
         "sort_key": "quoteVolume"
     },
     {"method": "AgeFilter", "min_days_listed": 10},
+    {
+        "method": "RangeStabilityFilter",
+        "lookback_days": 10,
+        "min_rate_of_change": 0.01,
+        "refresh_period": 1440
+    },
     {"method": "ShuffleFilter"}
 ],
 ```
