@@ -84,6 +84,8 @@ but for testing no minimal_roi is probably the best
 
 ### Pair list
 
+use `docker-compose run freqtrade test-pairlist` to check the pairlist
+
 ref <https://www.freqtrade.io/en/stable/includes/pairlists/>
 
 example
@@ -106,13 +108,6 @@ example
         "sort_key": "quoteVolume"
     },
     {"method": "AgeFilter", "min_days_listed": 10},
-    {"method": "PrecisionFilter"},
-    {
-        "method": "RangeStabilityFilter",
-        "lookback_days": 10,
-        "min_rate_of_change": 0.01,
-        "refresh_period": 1440
-    },
     {"method": "ShuffleFilter"}
 ],
 ```
