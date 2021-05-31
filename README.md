@@ -14,10 +14,15 @@ freqtrade new-config --config user_data/config.json
 # download data
 freqtrade download-data --exchange binance -t 5m --days 40
 
-# use hyperopt to optimise parameters
-freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy roi trailing sell --strategy GodStraNew
+# use hyperopt to optimise strategy parameters by buy and sell signal
+# read this for the loss function https://www.freqtrade.io/en/stable/hyperopt/#loss-functions
+freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --strategy GodStraNew
 
 # update parameters to default config inside strategy python file
+
+# use hyperopt to optimise roi and trailing configs parameters
+freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces roi trailing --strategy GodStraNew
+
 # update minimal_roi and trailing_stop to config
 
 # backtesting
@@ -104,10 +109,10 @@ example
 "pairlists": [
     {
         "method": "VolumePairList",
-        "number_assets": 10,
+        "number_assets": 20,
         "sort_key": "quoteVolume"
     },
-    {"method": "AgeFilter", "min_days_listed": 10},
+    {"method": "AgeFilter", "min_days_listed": 7},
     {
         "method": "RangeStabilityFilter",
         "lookback_days": 10,
