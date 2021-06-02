@@ -16,12 +16,18 @@ freqtrade download-data --exchange binance -t 5m --days 40
 
 # use hyperopt to optimise strategy parameters by buy and sell signal
 # read this for the loss function https://www.freqtrade.io/en/stable/hyperopt/#loss-functions
-freqtrade hyperopt --hyperopt-loss ShortTradeDurHyperOptLoss --spaces buy sell --strategy GodStraNew
+# ShortTradeDurHyperOptLoss (default legacy Freqtrade hyperoptimization loss function) - Mostly for short trade duration and avoiding losses.
+# OnlyProfitHyperOptLoss (which takes only amount of profit into consideration)
+# SharpeHyperOptLoss (optimizes Sharpe Ratio calculated on trade returns relative to standard deviation)
+# SharpeHyperOptLossDaily (optimizes Sharpe Ratio calculated on daily trade returns relative to standard deviation)
+# SortinoHyperOptLoss (optimizes Sortino Ratio calculated on trade returns relative to downside standard deviation)
+# SortinoHyperOptLossDaily (optimizes Sortino Ratio calculated on daily trade returns relative to downside standard deviation)
+freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timerange 20200602-20210602 --timeframe 5m --strategy GodStra_All_Indicator
 
 # update parameters to default config inside strategy python file
 
 # use hyperopt to optimise roi and trailing configs parameters
-freqtrade hyperopt --hyperopt-loss ShortTradeDurHyperOptLoss --spaces roi trailing --strategy GodStraNew
+freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20200602-20210602 --timeframe 5m --strategy GodStra_All_Indicator
 
 # update minimal_roi and trailing_stop to config
 
