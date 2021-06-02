@@ -22,12 +22,12 @@ freqtrade download-data --exchange binance -t 5m --days 40
 # SharpeHyperOptLossDaily (optimizes Sharpe Ratio calculated on daily trade returns relative to standard deviation)
 # SortinoHyperOptLoss (optimizes Sortino Ratio calculated on trade returns relative to downside standard deviation)
 # SortinoHyperOptLossDaily (optimizes Sortino Ratio calculated on daily trade returns relative to downside standard deviation)
-freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timerange 20200602-20210602 --timeframe 5m --strategy GodStra_All_Indicator
+freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --timerange 20200602-20210602 --timeframe 5m --strategy GodStra_All_Indicator
 
 # update parameters to default config inside strategy python file
 
 # use hyperopt to optimise roi and trailing configs parameters
-freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20200602-20210602 --timeframe 5m --strategy GodStra_All_Indicator
+freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20200102-20210602 --timeframe 5m --strategy GodStra_All_Indicator
 
 # update minimal_roi and trailing_stop to config
 
@@ -128,3 +128,21 @@ example
     {"method": "ShuffleFilter"}
 ],
 ```
+
+## Strategy
+
+GodStraNew3
+Indicator: SMA
+Loss Function: SharpeHyperOptLoss
+Trade Count: 3
+
+GodStraNew5
+Indicator: EMA
+Loss Function: OnlyProfitHyperOptLoss
+Trade Count: 3
+
+GodStraNew7
+Indicator: EMA
+Loss Function: SharpeHyperOptLoss
+Trade Count: 3
+

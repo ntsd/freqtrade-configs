@@ -479,7 +479,7 @@ sell_params = {
     "sell_real_num2": 0.1,
 }
 
-class GodStraNew40_3(IStrategy):
+class GodStraNew3(IStrategy):
     # #################### RESULTS PASTE PLACE ####################
 
     # #################### END OF RESULT PLACE ####################

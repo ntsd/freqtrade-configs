@@ -19,38 +19,6 @@ import freqtrade.vendor.qtpylib.indicators as qtpylib
 from functools import reduce
 import numpy as np
 from random import shuffle
-
-buy_params = {
-    "buy_crossed_indicator0": "SMA-110",
-    "buy_crossed_indicator1": "SMA-15",
-    "buy_crossed_indicator2": "SMA-6",
-    "buy_indicator0": "SMA-100",
-    "buy_indicator1": "SMA-12",
-    "buy_indicator2": "SMA-110",
-    "buy_operator0": "<R",
-    "buy_operator1": "/>R",
-    "buy_operator2": "CA",
-    "buy_real_num0": 0.2,
-    "buy_real_num1": 0.5,
-    "buy_real_num2": 1.0,
-}
-
-# Sell hyperspace params:
-sell_params = {
-    "sell_crossed_indicator0": "SMA-55",
-    "sell_crossed_indicator1": "SMA-50",
-    "sell_crossed_indicator2": "SMA-50",
-    "sell_indicator0": "SMA-5",
-    "sell_indicator1": "SMA-5",
-    "sell_indicator2": "SMA-6",
-    "sell_operator0": "CDT",
-    "sell_operator1": "/=R",
-    "sell_operator2": "COT",
-    "sell_real_num0": 0.8,
-    "sell_real_num1": 0.9,
-    "sell_real_num2": 0.1,
-}
-
 #  TODO: this gene is removed 'MAVP' cuz or error on periods
 all_god_genes = {
     'Overlap Studies': {
@@ -104,11 +72,9 @@ all_god_genes = {
         'PLUS_DM',              # Plus Directional Movement
         'PPO',                  # Percentage Price Oscillator
         'ROC',                  # Rate of change : ((price/prevPrice)-1)*100
-        # Rate of change Percentage: (price-prevPrice)/prevPrice
-        'ROCP',
+        'ROCP',                 # Rate of change Percentage: (price-prevPrice)/prevPrice
         'ROCR',                 # Rate of change ratio: (price/prevPrice)
-        # Rate of change ratio 100 scale: (price/prevPrice)*100
-        'ROCR100',
+        'ROCR100',              # Rate of change ratio 100 scale: (price/prevPrice)*100
         'RSI',                  # Relative Strength Index
         'STOCH-0',              # Stochastic
         'STOCH-1',              # Stochastic
@@ -116,8 +82,7 @@ all_god_genes = {
         'STOCHF-1',             # Stochastic Fast
         'STOCHRSI-0',           # Stochastic Relative Strength Index
         'STOCHRSI-1',           # Stochastic Relative Strength Index
-        # 1-day Rate-Of-Change (ROC) of a Triple Smooth EMA
-        'TRIX',
+        'TRIX',                 # 1-day Rate-Of-Change (ROC) of a Triple Smooth EMA
         'ULTOSC',               # Ultimate Oscillator
         'WILLR',                # Williams' %R
     },
@@ -201,8 +166,7 @@ all_god_genes = {
         'CDLSPINNINGTOP',       # Spinning Top
         'CDLSTALLEDPATTERN',    # Stalled Pattern
         'CDLSTICKSANDWICH',     # Stick Sandwich
-        # Takuri (Dragonfly Doji with very long lower shadow)
-        'CDLTAKURI',
+        'CDLTAKURI',            # Takuri (Dragonfly Doji with very long lower shadow)
         'CDLTASUKIGAP',         # Tasuki Gap
         'CDLTHRUSTING',         # Thrusting Pattern
         'CDLTRISTAR',           # Tristar Pattern
@@ -227,7 +191,7 @@ all_god_genes = {
 god_genes = set()
 ########################### SETTINGS ##############################
 
-god_genes = {'SMA'}
+god_genes = {'EMA'}
 # god_genes |= all_god_genes['Overlap Studies']
 # god_genes |= all_god_genes['Momentum Indicators']
 # god_genes |= all_god_genes['Volume Indicators']
@@ -364,13 +328,11 @@ def condition_generator(dataframe, operator, indicator, crossed_indicator, real_
     # TODO : it ill callculated in populate indicators.
 
     dataframe[indicator] = gene_calculator(dataframe, indicator)
-    dataframe[crossed_indicator] = gene_calculator(
-        dataframe, crossed_indicator)
+    dataframe[crossed_indicator] = gene_calculator(dataframe, crossed_indicator)
 
     indicator_trend_sma = f"{indicator}-SMA-{TREND_CHECK_CANDLES}"
     if operator in ["UT", "DT", "OT", "CUT", "CDT", "COT"]:
-        dataframe[indicator_trend_sma] = gene_calculator(
-            dataframe, indicator_trend_sma)
+        dataframe[indicator_trend_sma] = gene_calculator(dataframe, indicator_trend_sma)
 
     if operator == ">":
         condition = (
@@ -387,13 +349,11 @@ def condition_generator(dataframe, operator, indicator, crossed_indicator, real_
     elif operator == "C":
         condition = (
             (qtpylib.crossed_below(dataframe[indicator], dataframe[crossed_indicator])) |
-            (qtpylib.crossed_above(
-                dataframe[indicator], dataframe[crossed_indicator]))
+            (qtpylib.crossed_above(dataframe[indicator], dataframe[crossed_indicator]))
         )
     elif operator == "CA":
         condition = (
-            qtpylib.crossed_above(
-                dataframe[indicator], dataframe[crossed_indicator])
+            qtpylib.crossed_above(dataframe[indicator], dataframe[crossed_indicator])
         )
     elif operator == "CB":
         condition = (
@@ -418,8 +378,7 @@ def condition_generator(dataframe, operator, indicator, crossed_indicator, real_
         )
     elif operator == "/=R":
         condition = (
-            np.isclose(dataframe[indicator].div(
-                dataframe[crossed_indicator]), real_num)
+            np.isclose(dataframe[indicator].div(dataframe[crossed_indicator]), real_num)
         )
     elif operator == "/<R":
         condition = (
@@ -489,7 +448,39 @@ def condition_generator(dataframe, operator, indicator, crossed_indicator, real_
     return condition, dataframe
 
 
-class GodStra_All_Indicator(IStrategy):
+# Buy hyperspace params:
+buy_params = {
+    "buy_crossed_indicator0": "EMA-12",
+    "buy_crossed_indicator1": "EMA-100",
+    "buy_crossed_indicator2": "EMA-5",
+    "buy_indicator0": "EMA-55",
+    "buy_indicator1": "EMA-5",
+    "buy_indicator2": "EMA-55",
+    "buy_operator0": "/>R",
+    "buy_operator1": "D",
+    "buy_operator2": "<R",
+    "buy_real_num0": 0.6,
+    "buy_real_num1": 0.7,
+    "buy_real_num2": 0.1,
+}
+
+# Sell hyperspace params:
+sell_params = {
+    "sell_crossed_indicator0": "EMA-15",
+    "sell_crossed_indicator1": "EMA-15",
+    "sell_crossed_indicator2": "EMA-12",
+    "sell_indicator0": "EMA-12",
+    "sell_indicator1": "EMA-50",
+    "sell_indicator2": "EMA-12",
+    "sell_operator0": "OT",
+    "sell_operator1": "COT",
+    "sell_operator2": "D",
+    "sell_real_num0": 1.0,
+    "sell_real_num1": 0.0,
+    "sell_real_num2": 1.0,
+}
+
+class GodStraNew7(IStrategy):
     # #################### RESULTS PASTE PLACE ####################
 
     # #################### END OF RESULT PLACE ####################
@@ -510,19 +501,13 @@ class GodStra_All_Indicator(IStrategy):
     buy_indicator2 = CategoricalParameter(
         god_genes_with_timeperiod, default=buy_params["buy_indicator2"], space='buy')
 
-    buy_operator0 = CategoricalParameter(
-        operators, default=buy_params["buy_operator0"], space='buy')
-    buy_operator1 = CategoricalParameter(
-        operators, default=buy_params["buy_operator1"], space='buy')
-    buy_operator2 = CategoricalParameter(
-        operators, default=buy_params["buy_operator2"], space='buy')
+    buy_operator0 = CategoricalParameter(operators, default=buy_params["buy_operator0"], space='buy')
+    buy_operator1 = CategoricalParameter(operators, default=buy_params["buy_operator1"], space='buy')
+    buy_operator2 = CategoricalParameter(operators, default=buy_params["buy_operator2"], space='buy')
 
-    buy_real_num0 = DecimalParameter(
-        0, 1, decimals=DECIMALS,  default=buy_params["buy_real_num0"], space='buy')
-    buy_real_num1 = DecimalParameter(
-        0, 1, decimals=DECIMALS, default=buy_params["buy_real_num1"], space='buy')
-    buy_real_num2 = DecimalParameter(
-        0, 1, decimals=DECIMALS, default=buy_params["buy_real_num2"], space='buy')
+    buy_real_num0 = DecimalParameter(0, 1, decimals=DECIMALS,  default=buy_params["buy_real_num0"], space='buy')
+    buy_real_num1 = DecimalParameter(0, 1, decimals=DECIMALS, default=buy_params["buy_real_num1"], space='buy')
+    buy_real_num2 = DecimalParameter(0, 1, decimals=DECIMALS, default=buy_params["buy_real_num2"], space='buy')
 
     # Sell Hyperoptable Parameters/Spaces.
     sell_crossed_indicator0 = CategoricalParameter(
@@ -539,19 +524,13 @@ class GodStra_All_Indicator(IStrategy):
     sell_indicator2 = CategoricalParameter(
         god_genes_with_timeperiod, default=sell_params["sell_indicator2"], space='sell')
 
-    sell_operator0 = CategoricalParameter(
-        operators, default=sell_params["sell_operator0"], space='sell')
-    sell_operator1 = CategoricalParameter(
-        operators, default=sell_params["sell_operator1"], space='sell')
-    sell_operator2 = CategoricalParameter(
-        operators, default=sell_params["sell_operator2"], space='sell')
+    sell_operator0 = CategoricalParameter(operators, default=sell_params["sell_operator0"], space='sell')
+    sell_operator1 = CategoricalParameter(operators, default=sell_params["sell_operator1"], space='sell')
+    sell_operator2 = CategoricalParameter(operators, default=sell_params["sell_operator2"], space='sell')
 
-    sell_real_num0 = DecimalParameter(
-        0, 1, decimals=DECIMALS, default=sell_params["sell_real_num0"], space='sell')
-    sell_real_num1 = DecimalParameter(
-        0, 1, decimals=DECIMALS, default=sell_params["sell_real_num1"], space='sell')
-    sell_real_num2 = DecimalParameter(
-        0, 1, decimals=DECIMALS, default=sell_params["sell_real_num2"], space='sell')
+    sell_real_num0 = DecimalParameter(0, 1, decimals=DECIMALS, default=sell_params["sell_real_num0"], space='sell')
+    sell_real_num1 = DecimalParameter(0, 1, decimals=DECIMALS, default=sell_params["sell_real_num1"], space='sell')
+    sell_real_num2 = DecimalParameter(0, 1, decimals=DECIMALS, default=sell_params["sell_real_num2"], space='sell')
 
     # Stoploss:
     stoploss = -1
