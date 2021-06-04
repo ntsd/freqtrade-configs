@@ -447,41 +447,40 @@ def condition_generator(dataframe, operator, indicator, crossed_indicator, real_
 
     return condition, dataframe
 
-
-# Buy hyperspace params:
-buy_params = {
-    "buy_crossed_indicator0": "EMA-12",
-    "buy_crossed_indicator1": "EMA-100",
-    "buy_crossed_indicator2": "EMA-5",
-    "buy_indicator0": "EMA-55",
-    "buy_indicator1": "EMA-5",
-    "buy_indicator2": "EMA-55",
-    "buy_operator0": "/>R",
-    "buy_operator1": "D",
-    "buy_operator2": "<R",
-    "buy_real_num0": 0.6,
-    "buy_real_num1": 0.7,
-    "buy_real_num2": 0.1,
-}
-
-# Sell hyperspace params:
-sell_params = {
-    "sell_crossed_indicator0": "EMA-15",
-    "sell_crossed_indicator1": "EMA-15",
-    "sell_crossed_indicator2": "EMA-12",
-    "sell_indicator0": "EMA-12",
-    "sell_indicator1": "EMA-50",
-    "sell_indicator2": "EMA-12",
-    "sell_operator0": "OT",
-    "sell_operator1": "COT",
-    "sell_operator2": "D",
-    "sell_real_num0": 1.0,
-    "sell_real_num1": 0.0,
-    "sell_real_num2": 1.0,
-}
-
 class GodStraNew7(IStrategy):
     # #################### RESULTS PASTE PLACE ####################
+    # Buy hyperspace params:
+    buy_params = {
+        "buy_crossed_indicator0": "EMA-12",
+        "buy_crossed_indicator1": "EMA-100",
+        "buy_crossed_indicator2": "EMA-5",
+        "buy_indicator0": "EMA-55",
+        "buy_indicator1": "EMA-5",
+        "buy_indicator2": "EMA-55",
+        "buy_operator0": "/>R",
+        "buy_operator1": "D",
+        "buy_operator2": "<R",
+        "buy_real_num0": 0.6,
+        "buy_real_num1": 0.7,
+        "buy_real_num2": 0.1,
+    }
+
+    # Sell hyperspace params:
+    sell_params = {
+        "sell_crossed_indicator0": "EMA-15",
+        "sell_crossed_indicator1": "EMA-15",
+        "sell_crossed_indicator2": "EMA-12",
+        "sell_indicator0": "EMA-12",
+        "sell_indicator1": "EMA-50",
+        "sell_indicator2": "EMA-12",
+        "sell_operator0": "OT",
+        "sell_operator1": "COT",
+        "sell_operator2": "D",
+        "sell_real_num0": 1.0,
+        "sell_real_num1": 0.0,
+        "sell_real_num2": 1.0,
+    }
+
     # ROI table:
     minimal_roi = {
         "0": 0.06,
