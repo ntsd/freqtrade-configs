@@ -27,7 +27,7 @@ freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --timera
 # update parameters to default config inside strategy python file
 
 # use hyperopt to optimise roi and trailing configs parameters
-freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20200102-20210602 --timeframe 5m --strategy GodStra_All_Indicator
+freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20200602-20210602 --timeframe 5m --strategy GodStra_All_Indicator
 
 # update minimal_roi and trailing_stop to config
 
@@ -67,11 +67,7 @@ docker-compose up -d
 
 ### Using minimal roi
 
-key mean hours time
-
-value mean percentage of profit
-
-example: "12": 0.064 mean after 12 hours holding if the profit positive more than 6.4% will automatic sell
+example: "12": 0.064 mean after 12 mins holding if the profit positive more than 6.4% will automatic sell
 
 but for testing no minimal_roi is probably the best
 

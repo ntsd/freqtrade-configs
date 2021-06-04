@@ -482,7 +482,23 @@ sell_params = {
 
 class GodStraNew7(IStrategy):
     # #################### RESULTS PASTE PLACE ####################
+    # ROI table:
+    minimal_roi = {
+        "0": 0.06,
+        "33": 0.044,
+        "56": 0.023
+    }
 
+    # Trailing stop:
+    trailing_stop = True
+    trailing_stop_positive = 0.209
+    trailing_stop_positive_offset = 0.293
+    trailing_only_offset_is_reached = False
+
+    # Stoploss:
+    stoploss = -1
+    # Buy hypers
+    timeframe = '5m'
     # #################### END OF RESULT PLACE ####################
 
     # TODO: Its not dry code!
@@ -531,11 +547,6 @@ class GodStraNew7(IStrategy):
     sell_real_num0 = DecimalParameter(0, 1, decimals=DECIMALS, default=sell_params["sell_real_num0"], space='sell')
     sell_real_num1 = DecimalParameter(0, 1, decimals=DECIMALS, default=sell_params["sell_real_num1"], space='sell')
     sell_real_num2 = DecimalParameter(0, 1, decimals=DECIMALS, default=sell_params["sell_real_num2"], space='sell')
-
-    # Stoploss:
-    stoploss = -1
-    # Buy hypers
-    timeframe = '4h'
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         '''

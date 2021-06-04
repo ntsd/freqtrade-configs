@@ -99,14 +99,5 @@
   "forcebuy_enable": false,
   "internals": {
     "process_throttle_secs": 5
-  },
-  "minimal_roi": {
-    "0": 0.082,
-    "40": 0.06,
-    "86": 0.04,
-    "135": 0
-  },
-  "trailing_stop": true,
-  "trailing_stop_positive": 0.057,
-  "trailing_stop_positive_offset": 0.072
+  }
 }
