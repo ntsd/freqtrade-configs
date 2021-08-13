@@ -483,9 +483,8 @@ class GodStraNew7(IStrategy):
 
     # ROI table:
     minimal_roi = {
-        "0": 0.06,
-        "33": 0.044,
-        "56": 0.023
+        "0": 0.18,
+        "12": 0.087
     }
 
     # Trailing stop:

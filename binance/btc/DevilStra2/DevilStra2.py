@@ -550,8 +550,7 @@ class DevilStra2(IStrategy):
     # ROI table:
     minimal_roi = {
         "0": 0.18,
-        "12": 0.087,
-        "50": 0.037
+        "12": 0.087
     }
 
     # Trailing stop:
