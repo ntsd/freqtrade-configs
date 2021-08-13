@@ -12,7 +12,7 @@ freqtrade new-config --config user_data/config.json
 
 # change config pairs manual
 # download data
-freqtrade download-data --exchange binance -t 5m --days 40
+freqtrade download-data --exchange binance -t 5m --days 500
 
 # use hyperopt to optimise strategy parameters by buy and sell signal
 # read this for the loss function https://www.freqtrade.io/en/stable/hyperopt/#loss-functions
@@ -22,7 +22,7 @@ freqtrade download-data --exchange binance -t 5m --days 40
 # SharpeHyperOptLossDaily (optimizes Sharpe Ratio calculated on daily trade returns relative to standard deviation)
 # SortinoHyperOptLoss (optimizes Sortino Ratio calculated on trade returns relative to downside standard deviation)
 # SortinoHyperOptLossDaily (optimizes Sortino Ratio calculated on daily trade returns relative to downside standard deviation)
-freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --timerange 20200602-20210602 --timeframe 5m --strategy GodStra_All_Indicator
+freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --timerange 20210101-20210807 --timeframe 5m --strategy GodStra_All_Indicator
 
 # update parameters to default config inside strategy python file
 
