@@ -32,10 +32,10 @@ freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing 
 # update minimal_roi and trailing_stop to config
 
 # backtesting
-freqtrade backtesting --strategy GodStraNew --timeframe 5m
+freqtrade backtesting --strategy DevilStra2 --timeframe 5m
 
 # or compare list
-freqtrade backtesting --strategy-list GodStraNew20 GodStraNew30 GodStraNew40 --timeframe 5m
+freqtrade backtesting --strategy-list GodStraNew7 DevilStra2 DevilStra3 NostalgiaForInfinityV7 --timeframe 5m
 ```
 
 ## How to run (docker)
