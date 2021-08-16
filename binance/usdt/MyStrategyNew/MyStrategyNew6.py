@@ -30,8 +30,8 @@ TIMEFRAMES = ('5m', '15m', '30m', '1h', '4h')
 BASE_TIMEFRAME = TIMEFRAMES[0]
 INFO_TIMEFRAMES = TIMEFRAMES[1:]
 
-PERIODS = (5, 8, 13, 24, 39, 48) # (5, 6, 8, 9, 13, 18, 24, 31, 39, 48)
-MAX_CONDITIONS = 5
+PERIODS = (5, 8, 13, 24, 39, 48)  # (5, 6, 8, 9, 13, 18, 24, 31, 39, 48)
+MAX_CONDITIONS = 3
 
 ########################### Operators ###########################
 
@@ -125,7 +125,8 @@ class MyStrategyNew6(IStrategy):
         run_mode = self.dp.runmode.value
         if run_mode in ('backtest', 'live', 'dry_run'):
             # TODO add only using timeframe and period
-            pass
+            avalidable_info_timeframes = INFO_TIMEFRAMES
+            avalidable_periods = PERIODS
         else:
             avalidable_info_timeframes = INFO_TIMEFRAMES
             avalidable_periods = PERIODS
@@ -149,6 +150,8 @@ class MyStrategyNew6(IStrategy):
         for condition_idx in range(MAX_CONDITIONS):
             condition_name = getattr(self, f'buy_condition_{condition_idx}').value
             first_indicator, operator, second_indicator = unpack_condition(condition_name)
+            if not operator:  # skip when condition is None
+                continue
             condition, dataframe = apply_operator(dataframe, first_indicator, second_indicator, operator)
             conditions.append(condition)
 
@@ -163,6 +166,8 @@ class MyStrategyNew6(IStrategy):
         for condition_idx in range(MAX_CONDITIONS):
             condition_name = getattr(self, f'sell_condition_{condition_idx}').value
             first_indicator, operator, second_indicator = unpack_condition(condition_name)
+            if not operator:  # skip when condition is None
+                continue
             condition, dataframe = apply_operator(dataframe, first_indicator, second_indicator, operator)
             conditions.append(condition)
 

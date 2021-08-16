@@ -41,10 +41,10 @@ class MyStrategyNew2(IStrategy):
     timeframe = base_timeframe
 
     # Hyperopt parameters
-    buy_fast_ema_period = IntParameter(5, 50, default=12, space='buy')
-    buy_slow_ema_period = IntParameter(5, 50, default=26, space='buy')
-    sell_fast_ema_period = IntParameter(5, 50, default=12, space='sell')
-    sell_slow_ema_period = IntParameter(5, 50, default=26, space='sell')
+    buy_fast_ema_period_5m = IntParameter(5, 50, default=12, space='buy')
+    buy_slow_ema_period_5m = IntParameter(5, 50, default=26, space='buy')
+    sell_fast_ema_period_5m = IntParameter(5, 50, default=12, space='sell')
+    sell_slow_ema_period_5m = IntParameter(5, 50, default=26, space='sell')
 
     buy_fast_ema_period_15m = IntParameter(5, 50, default=12, space='buy')
     buy_slow_ema_period_15m = IntParameter(5, 50, default=26, space='buy')
@@ -76,17 +76,17 @@ class MyStrategyNew2(IStrategy):
         runmode = self.dp.runmode.value
         periods = set()
         if runmode in ('backtest', 'live', 'dry_run'):
-            periods.add(self.buy_fast_ema_period.value)
-            periods.add(self.buy_slow_ema_period.value)
-            periods.add(self.sell_fast_ema_period.value)
-            periods.add(self.sell_slow_ema_period.value)
+            periods.add(self.buy_fast_ema_period_5m.value)
+            periods.add(self.buy_slow_ema_period_5m.value)
+            periods.add(self.sell_fast_ema_period_5m.value)
+            periods.add(self.sell_slow_ema_period_5m.value)
             for info_timeframe in info_timeframes:
                 periods.add(getattr(self, f'buy_fast_ema_period_{info_timeframe}').value)
                 periods.add(getattr(self, f'buy_slow_ema_period_{info_timeframe}').value)
                 periods.add(getattr(self, f'sell_fast_ema_period_{info_timeframe}').value)
                 periods.add(getattr(self, f'sell_slow_ema_period_{info_timeframe}').value)
         else:
-            for period in self.buy_fast_ema_period.range:
+            for period in self.buy_fast_ema_period_5m.range:
                 periods.add(period)
 
         for info_timeframe in info_timeframes:
@@ -113,8 +113,8 @@ class MyStrategyNew2(IStrategy):
         return condition, dataframe
 
     def populate_buy_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        fast_ema_period = self.buy_fast_ema_period.value
-        slow_ema_period = self.buy_slow_ema_period.value
+        fast_ema_period = self.buy_fast_ema_period_5m.value
+        slow_ema_period = self.buy_slow_ema_period_5m.value
 
         conditions = list()
 
@@ -137,8 +137,8 @@ class MyStrategyNew2(IStrategy):
         return dataframe
 
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        fast_ema_period = self.sell_fast_ema_period.value
-        slow_ema_period = self.sell_slow_ema_period.value
+        fast_ema_period = self.sell_fast_ema_period_5m.value
+        slow_ema_period = self.sell_slow_ema_period_5m.value
 
         conditions = list()
 
