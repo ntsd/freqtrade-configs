@@ -186,8 +186,8 @@ all_god_genes = {
         'TSF',                  # Time Series Forecast
         'VAR',                  # Variance
     }
-
 }
+
 god_genes = set()
 ########################### SETTINGS ##############################
 
@@ -519,7 +519,7 @@ class GodStraNew7(IStrategy):
     buy_operator1 = CategoricalParameter(operators, default=buy_params["buy_operator1"], space='buy')
     buy_operator2 = CategoricalParameter(operators, default=buy_params["buy_operator2"], space='buy')
 
-    buy_real_num0 = DecimalParameter(0, 1, decimals=DECIMALS,  default=buy_params["buy_real_num0"], space='buy')
+    buy_real_num0 = DecimalParameter(0, 1, decimals=DECIMALS, default=buy_params["buy_real_num0"], space='buy')
     buy_real_num1 = DecimalParameter(0, 1, decimals=DECIMALS, default=buy_params["buy_real_num1"], space='buy')
     buy_real_num2 = DecimalParameter(0, 1, decimals=DECIMALS, default=buy_params["buy_real_num2"], space='buy')
 

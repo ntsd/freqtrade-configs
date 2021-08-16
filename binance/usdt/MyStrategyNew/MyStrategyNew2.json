@@ -1,0 +1,44 @@
+{
+  "strategy_name": "MyStrategyNew2",
+  "params": {
+    "roi": {
+      "0": 1
+    },
+    "stoploss": {
+      "stoploss": -1.0
+    },
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.15,
+      "trailing_stop_positive_offset": 0.197,
+      "trailing_only_offset_is_reached": true
+    },
+    "buy": {
+      "buy_fast_ema_period": 25,
+      "buy_fast_ema_period_15m": 18,
+      "buy_fast_ema_period_1h": 31,
+      "buy_fast_ema_period_30m": 34,
+      "buy_fast_ema_period_4h": 23,
+      "buy_slow_ema_period": 35,
+      "buy_slow_ema_period_15m": 33,
+      "buy_slow_ema_period_1h": 15,
+      "buy_slow_ema_period_30m": 18,
+      "buy_slow_ema_period_4h": 37
+    },
+    "sell": {
+      "sell_fast_ema_period": 33,
+      "sell_fast_ema_period_15m": 24,
+      "sell_fast_ema_period_1h": 40,
+      "sell_fast_ema_period_30m": 13,
+      "sell_fast_ema_period_4h": 25,
+      "sell_slow_ema_period": 19,
+      "sell_slow_ema_period_15m": 40,
+      "sell_slow_ema_period_1h": 15,
+      "sell_slow_ema_period_30m": 33,
+      "sell_slow_ema_period_4h": 27
+    },
+    "protection": {}
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2021-08-15 16:04:19.826662+00:00"
+}

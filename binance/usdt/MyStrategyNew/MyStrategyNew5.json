@@ -1,0 +1,36 @@
+{
+  "strategy_name": "MyStrategyNew5",
+  "params": {
+    "roi": {
+      "0": 1
+    },
+    "stoploss": {
+      "stoploss": -1.0
+    },
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.15,
+      "trailing_stop_positive_offset": 0.197,
+      "trailing_only_offset_is_reached": true
+    },
+    "buy": {
+      "buy_fast_period_15m": 23,
+      "buy_fast_period_1h": 45,
+      "buy_fast_period_5m": 36,
+      "buy_slow_period_15m": 14,
+      "buy_slow_period_1h": 20,
+      "buy_slow_period_5m": 39
+    },
+    "sell": {
+      "sell_fast_period_15m": 34,
+      "sell_fast_period_1h": 17,
+      "sell_fast_period_5m": 24,
+      "sell_slow_period_15m": 43,
+      "sell_slow_period_1h": 15,
+      "sell_slow_period_5m": 28
+    },
+    "protection": {}
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2021-08-15 21:51:07.958269+00:00"
+}

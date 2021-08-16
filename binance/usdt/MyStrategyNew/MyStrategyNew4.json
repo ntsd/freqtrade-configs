@@ -1,0 +1,42 @@
+{
+  "strategy_name": "MyStrategyNew4",
+  "params": {
+    "roi": {
+      "0": 1
+    },
+    "stoploss": {
+      "stoploss": -1.0
+    },
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.15,
+      "trailing_stop_positive_offset": 0.197,
+      "trailing_only_offset_is_reached": true
+    },
+    "buy": {
+      "buy_fast_period_15m": 24,
+      "buy_fast_period_1h": 47,
+      "buy_fast_period_5m": 39,
+      "buy_operator_15m": ">",
+      "buy_operator_1h": ">",
+      "buy_operator_5m": "D",
+      "buy_slow_period_15m": 44,
+      "buy_slow_period_1h": 29,
+      "buy_slow_period_5m": 25
+    },
+    "sell": {
+      "sell_fast_period_15m": 42,
+      "sell_fast_period_1h": 35,
+      "sell_fast_period_5m": 18,
+      "sell_operator_15m": ">",
+      "sell_operator_1h": ">",
+      "sell_operator_5m": "D",
+      "sell_slow_period_15m": 44,
+      "sell_slow_period_1h": 14,
+      "sell_slow_period_5m": 10
+    },
+    "protection": {}
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2021-08-15 20:27:09.828119+00:00"
+}

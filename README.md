@@ -27,15 +27,15 @@ freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --timera
 # update parameters to default config inside strategy python file
 
 # use hyperopt to optimise roi and trailing configs parameters
-freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20200602-20210602 --timeframe 5m --strategy GodStra_All_Indicator
+freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20210101-20210807 --timeframe 5m --strategy GodStra_All_Indicator
 
 # update minimal_roi and trailing_stop to config
 
 # backtesting
-freqtrade backtesting --strategy DevilStra2 --timeframe 5m
+freqtrade backtesting --timeframe 5m --strategy DevilStra2 
 
 # or compare list
-freqtrade backtesting --strategy-list GodStraNew7 DevilStra2 DevilStra3 NostalgiaForInfinityV7 --timeframe 5m
+freqtrade backtesting --timeframe 5m --timerange 20210301-20210807 --strategy-list GodStraNew7 DevilStra2 DevilStra3 NostalgiaForInfinityV7 
 ```
 
 ## How to run (docker)
@@ -124,21 +124,3 @@ example
     {"method": "ShuffleFilter"}
 ],
 ```
-
-## Strategy
-
-GodStraNew3
-Indicator: SMA
-Loss Function: SharpeHyperOptLoss
-Trade Count: 3
-
-GodStraNew5
-Indicator: EMA
-Loss Function: OnlyProfitHyperOptLoss
-Trade Count: 3
-
-GodStraNew7
-Indicator: EMA
-Loss Function: SharpeHyperOptLoss
-Trade Count: 3
-

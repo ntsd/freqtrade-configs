@@ -1,0 +1,54 @@
+{
+  "strategy_name": "MyStrategyNew3",
+  "params": {
+    "roi": {
+      "0": 1
+    },
+    "stoploss": {
+      "stoploss": -1.0
+    },
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.15,
+      "trailing_stop_positive_offset": 0.197,
+      "trailing_only_offset_is_reached": true
+    },
+    "buy": {
+      "buy_fast_period_15m": 14,
+      "buy_fast_period_1h": 37,
+      "buy_fast_period_30m": 29,
+      "buy_fast_period_4h": 16,
+      "buy_fast_period_5m": 28,
+      "buy_operator_15m": ">",
+      "buy_operator_1h": ">",
+      "buy_operator_30m": "D",
+      "buy_operator_4h": "D",
+      "buy_operator_5m": "D",
+      "buy_slow_period_15m": 48,
+      "buy_slow_period_1h": 16,
+      "buy_slow_period_30m": 23,
+      "buy_slow_period_4h": 28,
+      "buy_slow_period_5m": 15
+    },
+    "sell": {
+      "sell_fast_period_15m": 48,
+      "sell_fast_period_1h": 36,
+      "sell_fast_period_30m": 47,
+      "sell_fast_period_4h": 17,
+      "sell_fast_period_5m": 22,
+      "sell_operator_15m": ">",
+      "sell_operator_1h": ">",
+      "sell_operator_30m": "D",
+      "sell_operator_4h": ">",
+      "sell_operator_5m": "D",
+      "sell_slow_period_15m": 15,
+      "sell_slow_period_1h": 43,
+      "sell_slow_period_30m": 9,
+      "sell_slow_period_4h": 17,
+      "sell_slow_period_5m": 12
+    },
+    "protection": {}
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2021-08-15 19:41:34.831456+00:00"
+}
