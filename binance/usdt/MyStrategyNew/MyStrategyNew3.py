@@ -164,7 +164,8 @@ class MyStrategyNew3(IStrategy):
                 dataframe, fast_indicator_timeframe, slow_indicator_timeframe, operator_timeframe, info_timeframe)
             conditions.append(condition)
 
-        dataframe.loc[reduce(lambda x, y: x & y, conditions), 'buy'] = 1
+        if conditions:
+            dataframe.loc[reduce(lambda x, y: x & y, conditions), 'buy'] = 1
 
         return dataframe
 
@@ -196,6 +197,7 @@ class MyStrategyNew3(IStrategy):
                 dataframe, fast_indicator_timeframe, slow_indicator_timeframe, operator_timeframe, info_timeframe)
             conditions.append(condition)
 
-        dataframe.loc[reduce(lambda x, y: x | y, conditions), 'sell'] = 1
+        if conditions:
+            dataframe.loc[reduce(lambda x, y: x & y, conditions), 'sell'] = 1
 
         return dataframe
