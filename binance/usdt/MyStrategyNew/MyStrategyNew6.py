@@ -53,6 +53,9 @@ def apply_operator(dataframe: DataFrame, first_indicator, second_indicator, oper
 ########################### Condition ###########################
 
 
+NONE_CONDITION = 'NONE'
+
+
 def generate_condition_set() -> set:
     """ generate_condition_set wil return possible indicators with operator
         {indicator_with_period}-{operator}-{indicator_with_period}
@@ -66,7 +69,7 @@ def generate_condition_set() -> set:
 
     # indicator_with_operators will be format {indicator_with_period}-{operator}-{indicator_with_period}
     possible_condition = set()
-    possible_condition.add('None')
+    possible_condition.add(f'x-{NONE_CONDITION}-x')
     indicators_permutations = itertools.permutations(indicator_with_periods, 2)
     for first_indicator, second_indicator in indicators_permutations:
         for operator in OPERATORS:
@@ -77,8 +80,6 @@ def generate_condition_set() -> set:
 
 def unpack_condition(condition: str) -> tuple[str, str, str]:
     """ Return first_indicator, operator, second_indicator"""
-    if condition == 'None':
-        return None, None, None
     first_indicator, operator, second_indicator = condition.split('-')
     return first_indicator, operator, second_indicator
 
@@ -150,7 +151,7 @@ class MyStrategyNew6(IStrategy):
         for condition_idx in range(MAX_CONDITIONS):
             condition_name = getattr(self, f'buy_condition_{condition_idx}').value
             first_indicator, operator, second_indicator = unpack_condition(condition_name)
-            if not operator:  # skip when condition is None
+            if operator == NONE_CONDITION:
                 continue
             condition, dataframe = apply_operator(dataframe, first_indicator, second_indicator, operator)
             conditions.append(condition)
@@ -166,7 +167,7 @@ class MyStrategyNew6(IStrategy):
         for condition_idx in range(MAX_CONDITIONS):
             condition_name = getattr(self, f'sell_condition_{condition_idx}').value
             first_indicator, operator, second_indicator = unpack_condition(condition_name)
-            if not operator:  # skip when condition is None
+            if operator == NONE_CONDITION:
                 continue
             condition, dataframe = apply_operator(dataframe, first_indicator, second_indicator, operator)
             conditions.append(condition)

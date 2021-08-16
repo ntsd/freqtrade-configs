@@ -1,0 +1,54 @@
+{
+  "strategy_name": "MyStrategyNew7",
+  "params": {
+    "roi": {
+      "0": 1
+    },
+    "stoploss": {
+      "stoploss": -1.0
+    },
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.15,
+      "trailing_stop_positive_offset": 0.197,
+      "trailing_only_offset_is_reached": true
+    },
+    "buy": {
+      "buy_findicator_0": "SMA",
+      "buy_findicator_1": "SMA",
+      "buy_findicator_2": "SMA",
+      "buy_findicator_3": "EMA",
+      "buy_fperiod_0": 2,
+      "buy_fperiod_1": 0,
+      "buy_fperiod_2": 1,
+      "buy_fperiod_3": 0,
+      "buy_ftimeframe_0": 2,
+      "buy_ftimeframe_1": 2,
+      "buy_ftimeframe_2": 0,
+      "buy_ftimeframe_3": 0,
+      "buy_operator_0": "D",
+      "buy_operator_1": "D",
+      "buy_operator_2": "D",
+      "buy_operator_3": "D",
+      "buy_speriod_0": 8,
+      "buy_speriod_1": 3,
+      "buy_speriod_2": 1,
+      "buy_speriod_3": 2,
+      "buy_stimeframe_0": 2,
+      "buy_stimeframe_1": 0,
+      "buy_stimeframe_2": 0,
+      "buy_stimeframe_3": 2
+    },
+    "sell": {
+      "sell_findicator_0": "SMA",
+      "sell_fperiod_0": 3,
+      "sell_ftimeframe_0": 2,
+      "sell_operator_0": ">",
+      "sell_speriod_0": 9,
+      "sell_stimeframe_0": 0
+    },
+    "protection": {}
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2021-08-16 20:12:28.300260+00:00"
+}
