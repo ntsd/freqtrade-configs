@@ -30,7 +30,7 @@ TIMEFRAMES = ('5m', '15m', '30m', '1h', '4h')
 BASE_TIMEFRAME = TIMEFRAMES[0]
 INFO_TIMEFRAMES = TIMEFRAMES[1:]
 
-PERIODS = (5, 6, 8, 9, 13, 18, 24, 31, 39, 48)
+PERIODS = (5, 8, 13, 24, 39, 48) # (5, 6, 8, 9, 13, 18, 24, 31, 39, 48)
 MAX_CONDITIONS = 5
 
 ########################### Operators ###########################
@@ -87,7 +87,7 @@ condition_set = generate_condition_set()
 print('condition_set legth:', len(condition_set))
 
 
-class MyStrategyNew3(IStrategy):
+class MyStrategyNew6(IStrategy):
     # ROI table:
     minimal_roi = {"0": 1}
 
@@ -124,7 +124,7 @@ class MyStrategyNew3(IStrategy):
 
         run_mode = self.dp.runmode.value
         if run_mode in ('backtest', 'live', 'dry_run'):
-            # TODO add only using timeframe and period 
+            # TODO add only using timeframe and period
             pass
         else:
             avalidable_info_timeframes = INFO_TIMEFRAMES
