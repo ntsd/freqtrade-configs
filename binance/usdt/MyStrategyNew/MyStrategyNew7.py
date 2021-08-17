@@ -38,7 +38,7 @@ PERIODS = (5, 6, 8, 9, 13, 18, 24, 31, 39, 48)
 PERIODS_LEN = len(PERIODS)
 
 BUY_MAX_CONDITIONS = 4
-SELL_MAX_CONDITIONS = 1
+SELL_MAX_CONDITIONS = 2
 
 ########################### Indicator ###########################
 
@@ -59,7 +59,7 @@ def apply_indicator(dataframe: DataFrame, key: str, indicator: str, period: int)
 
 
 def true_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: str):
-    return (dataframe['volume'] > 10)
+    return (dataframe['volume'] > 0)
 
 
 def greater_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: str):
@@ -95,7 +95,7 @@ OPERATORS = {
     '=': close_operator,
     'C': crossed_operator,
     'CA': crossed_above_operator,
-    'CB': crossed_below_operator,
+    # 'CB': crossed_below_operator,
 }
 
 

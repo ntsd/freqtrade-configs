@@ -92,9 +92,9 @@ OPERATORS = {
     # 'D': true_operator,
     '>': greater_operator,
     # '=': close_operator,
-    # 'C': crossed_operator,
+    'C': crossed_operator,
     'CA': crossed_above_operator,
-    # 'CB': crossed_below_operator,
+    'CB': crossed_below_operator,
 }
 
 
@@ -176,7 +176,7 @@ class MyStrategyNew8(IStrategy):
             # for these mode only add for current parameters setting
             trend = 'buy'
             for condition_idx in range(MAX_CONDITIONS):
-                indicator, timeframe, fperiod, speriod, operator = self.get_hyperopt_parameters(trend, condition_idx)
+                indicator, timeframe, fperiod, speriod, _ = self.get_hyperopt_parameters(trend, condition_idx)
                 avalidable_indicators.add(indicator)
                 avalidable_info_timeframes.add(TIMEFRAMES[timeframe])
                 avalidable_periods.add(PERIODS[fperiod])
