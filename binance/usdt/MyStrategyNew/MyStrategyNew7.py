@@ -5,6 +5,7 @@
 # V3 Update: Add operators
 # V6 Update: Optimise by categories
 # V7 Update: Optimise by using int parameter
+# V7.1 Update: Remove second timeframe and second indicator to use same as first
 # freqtrade download-data --exchange binance -t 5m --days 500
 # freqtrade download-data --exchange binance -t 15m --days 500
 # freqtrade download-data --exchange binance -t 30m --days 500
@@ -91,10 +92,10 @@ def crossed_below_operator(dataframe: DataFrame, main_indicator: str, crossed_in
 OPERATORS = {
     'D': true_operator,
     '>': greater_operator,
-    # '=': close_operator,
-    # 'C': crossed_operator,
+    '=': close_operator,
+    'C': crossed_operator,
     'CA': crossed_above_operator,
-    # 'CB': crossed_below_operator,
+    'CB': crossed_below_operator,
 }
 
 
@@ -106,28 +107,24 @@ def apply_operator(dataframe: DataFrame, first_indicator, second_indicator, oper
 
 
 def get_parameter_keys(trend: str, condition_idx: int):
-    k_1 = f'{trend}_findicator_{condition_idx}'
-    k_2 = f'{trend}_fperiod_{condition_idx}'
-    k_3 = f'{trend}_ftimeframe_{condition_idx}'
-    k_4 = f'{trend}_sindicator_{condition_idx}'
-    k_5 = f'{trend}_speriod_{condition_idx}'
-    k_6 = f'{trend}_stimeframe_{condition_idx}'
-    k_7 = f'{trend}_operator_{condition_idx}'
-    return k_1, k_2, k_3, k_4, k_5, k_6, k_7
+    k_1 = f'{trend}_indicator_{condition_idx}'
+    k_2 = f'{trend}_timeframe_{condition_idx}'
+    k_3 = f'{trend}_fperiod_{condition_idx}'
+    k_4 = f'{trend}_speriod_{condition_idx}'
+    k_5 = f'{trend}_operator_{condition_idx}'
+    return k_1, k_2, k_3, k_4, k_5
 
 
 def set_hyperopt_parameters(self):
     for trend in ['buy', 'sell']:
         max_conditions = [SELL_MAX_CONDITIONS, BUY_MAX_CONDITIONS][trend == 'buy']
         for condition_idx in range(max_conditions):
-            k_1, k_2, k_3, k_4, k_5, k_6, k_7 = get_parameter_keys(trend, condition_idx)
+            k_1, k_2, k_3, k_4, k_5 = get_parameter_keys(trend, condition_idx)
             setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
-            setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
-            setattr(self, k_3, IntParameter(0, TIMEFRAMES_LEN - 1, space=trend, default=0))
-            # setattr(self, k_4, CategoricalParameter(INDICATORS, space=trend))
-            setattr(self, k_5, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
-            setattr(self, k_6, IntParameter(0, TIMEFRAMES_LEN - 1, space=trend, default=0))
-            setattr(self, k_7, CategoricalParameter(OPERATORS.keys(), space=trend))
+            setattr(self, k_2, IntParameter(0, TIMEFRAMES_LEN - 1, space=trend, default=0))
+            setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+            setattr(self, k_4, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+            setattr(self, k_5, CategoricalParameter(OPERATORS.keys(), space=trend))
     return self
 
 
@@ -137,10 +134,10 @@ class MyStrategyNew7(IStrategy):
     minimal_roi = {"0": 1}
 
     # Trailing stop:
-    trailing_stop = True
-    trailing_stop_positive = 0.15
-    trailing_stop_positive_offset = 0.197
-    trailing_only_offset_is_reached = True
+    trailing_stop = False
+    trailing_stop_positive = 0.05
+    trailing_stop_positive_offset = 0.1
+    trailing_only_offset_is_reached = False
 
     # Stoploss
     stoploss = -1
@@ -153,21 +150,18 @@ class MyStrategyNew7(IStrategy):
         print("Self:", self.__dict__)
 
     def get_hyperopt_parameters(self, trend: str, condition_idx: int):
-        k_1, k_2, k_3, k_4, k_5, k_6, k_7 = get_parameter_keys(trend, condition_idx)
-        findicator = getattr(self, k_1).value
-        fperiod = getattr(self, k_2).value
-        ftimeframe = getattr(self, k_3).value
-        sindicator = findicator
-        # sindicator = getattr(self, k_4).value
-        speriod = getattr(self, k_5).value
-        stimeframe = getattr(self, k_6).value
-        operator = getattr(self, k_7).value
-        return findicator, fperiod, ftimeframe, sindicator, speriod, stimeframe, operator
+        k_1, k_2, k_3, k_4, k_5 = get_parameter_keys(trend, condition_idx)
+        indicator = getattr(self, k_1).value
+        timeframe = getattr(self, k_2).value
+        fperiod = getattr(self, k_3).value
+        speriod = getattr(self, k_4).value
+        operator = getattr(self, k_5).value
+        return indicator, timeframe, fperiod, speriod, operator
 
     def get_indicators_pair(self, trend: str, condition_idx: int) -> tuple[str, str, str]:
-        findicator, fperiod, ftimeframe, sindicator, speriod, stimeframe, operator = self.get_hyperopt_parameters(trend, condition_idx)
-        first_indicator = f'{findicator}_{PERIODS[fperiod]}_{TIMEFRAMES[ftimeframe]}'
-        second_indicator = f'{sindicator}_{PERIODS[speriod]}_{TIMEFRAMES[stimeframe]}'
+        indicator, timeframe, fperiod, speriod, operator = self.get_hyperopt_parameters(trend, condition_idx)
+        first_indicator = f'{indicator}_{PERIODS[fperiod]}_{TIMEFRAMES[timeframe]}'
+        second_indicator = f'{indicator}_{PERIODS[speriod]}_{TIMEFRAMES[timeframe]}'
         return first_indicator, second_indicator, operator
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -183,11 +177,9 @@ class MyStrategyNew7(IStrategy):
             for trend in ['buy', 'sell']:
                 max_conditions = [SELL_MAX_CONDITIONS, BUY_MAX_CONDITIONS][trend == 'buy']
                 for condition_idx in range(max_conditions):
-                    findicator, fperiod, ftimeframe, sindicator, speriod, stimeframe, _ = self.get_hyperopt_parameters(trend, condition_idx)
-                    avalidable_indicators.add(findicator)
-                    avalidable_indicators.add(sindicator)
-                    avalidable_info_timeframes.add(TIMEFRAMES[ftimeframe])
-                    avalidable_info_timeframes.add(TIMEFRAMES[stimeframe])
+                    indicator, timeframe, fperiod, speriod, _ = self.get_hyperopt_parameters(trend, condition_idx)
+                    avalidable_indicators.add(indicator)
+                    avalidable_info_timeframes.add(TIMEFRAMES[timeframe])
                     avalidable_periods.add(PERIODS[fperiod])
                     avalidable_periods.add(PERIODS[speriod])
         else:
