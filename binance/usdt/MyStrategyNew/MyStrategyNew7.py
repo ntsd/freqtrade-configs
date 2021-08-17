@@ -27,7 +27,7 @@ import itertools
 ########################### Static Parameters ###########################
 
 # Timeframes available for the exchange `Binance`: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
-INDICATORS = ('EMA', 'SMA')
+INDICATORS = ('EMA', 'SMA', 'CCI', 'WMA', 'ROC', 'CDLLADDERBOTTOM', 'CORREL', 'MACD-0', 'MACD-1', 'MACD-2', 'STOCHRSI-0', 'STOCHRSI-1', 'HT_SINE-0')
 
 TIMEFRAMES = ('5m', '15m', '1h')
 BASE_TIMEFRAME = TIMEFRAMES[0]
@@ -52,7 +52,17 @@ def apply_indicator(dataframe: DataFrame, key: str, indicator: str, period: int)
     if key in dataframe.keys():
         return
 
-    result = getattr(ta, indicator)(dataframe, timeperiod=period)
+    indicator_split = indicator.split('-')
+    indicator_name = indicator_split[0]
+    indicator_split_len = len(indicator_split)
+    if indicator_split_len == 1: # EMA-1, CCI- 1
+        result = getattr(ta, indicator_name)(dataframe, timeperiod=period)
+    elif indicator_split_len == 2: # MACD-1-15, # BBANDS-0-60 
+        gene_index = int(indicator_split[1])
+        result = getattr(ta, indicator_name)(
+            dataframe,
+            timeperiod=period,
+        ).iloc[:, gene_index]
     dataframe[key] = normalize(result)
 
 ########################### Operators ###########################
