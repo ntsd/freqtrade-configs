@@ -34,7 +34,7 @@ BASE_TIMEFRAME = TIMEFRAMES[0]
 INFO_TIMEFRAMES = TIMEFRAMES[1:]
 TIMEFRAMES_LEN = len(TIMEFRAMES)
 
-PERIODS = (5, 6, 8, 9, 13, 18, 24, 31, 39, 48)
+PERIODS = (5, 6, 13, 24, 31, 55, 110)
 PERIODS_LEN = len(PERIODS)
 
 BUY_MAX_CONDITIONS = 4
@@ -55,9 +55,9 @@ def apply_indicator(dataframe: DataFrame, key: str, indicator: str, period: int)
     indicator_split = indicator.split('-')
     indicator_name = indicator_split[0]
     indicator_split_len = len(indicator_split)
-    if indicator_split_len == 1: # EMA-1, CCI- 1
+    if indicator_split_len == 1:  # EMA-1, CCI- 1
         result = getattr(ta, indicator_name)(dataframe, timeperiod=period)
-    elif indicator_split_len == 2: # MACD-1-15, # BBANDS-0-60 
+    elif indicator_split_len == 2:  # MACD-1-15, # BBANDS-0-60
         gene_index = int(indicator_split[1])
         result = getattr(ta, indicator_name)(
             dataframe,
