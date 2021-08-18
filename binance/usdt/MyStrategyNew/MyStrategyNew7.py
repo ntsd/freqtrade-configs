@@ -29,16 +29,16 @@ import itertools
 # Timeframes available for the exchange `Binance`: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
 INDICATORS = ('EMA', 'SMA', 'CCI', 'WMA', 'ROC', 'CDLLADDERBOTTOM', 'CORREL', 'MACD-0', 'MACD-1', 'MACD-2', 'STOCHRSI-0', 'STOCHRSI-1', 'HT_SINE-0')
 
-TIMEFRAMES = ('5m', '15m', '1h')
+TIMEFRAMES = ('5m', '15m', '30m', '1h', '4h', '1d')
 BASE_TIMEFRAME = TIMEFRAMES[0]
 INFO_TIMEFRAMES = TIMEFRAMES[1:]
 TIMEFRAMES_LEN = len(TIMEFRAMES)
 
-PERIODS = (5, 6, 13, 24, 31, 55, 110)
+PERIODS = (5, 6, 12, 26, 31, 50, 55, 100, 110)
 PERIODS_LEN = len(PERIODS)
 
-BUY_MAX_CONDITIONS = 4
-SELL_MAX_CONDITIONS = 2
+BUY_MAX_CONDITIONS = 5
+SELL_MAX_CONDITIONS = 3
 
 ########################### Indicator ###########################
 
@@ -57,7 +57,7 @@ def apply_indicator(dataframe: DataFrame, key: str, indicator: str, period: int)
     indicator_split_len = len(indicator_split)
     if indicator_split_len == 1:  # EMA-1, CCI- 1
         result = getattr(ta, indicator_name)(dataframe, timeperiod=period)
-    elif indicator_split_len == 2:  # MACD-1-15, # BBANDS-0-60
+    elif indicator_split_len == 2:  # MACD-0-15, # MACD-1-15
         gene_index = int(indicator_split[1])
         result = getattr(ta, indicator_name)(
             dataframe,
@@ -75,6 +75,8 @@ def true_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: 
 def greater_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: str):
     return (dataframe[main_indicator] > dataframe[crossed_indicator])
 
+def lower_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: str):
+    return (dataframe[main_indicator] < dataframe[crossed_indicator])
 
 def close_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: str):
     return (np.isclose(dataframe[main_indicator], dataframe[crossed_indicator]))
@@ -102,10 +104,11 @@ def crossed_below_operator(dataframe: DataFrame, main_indicator: str, crossed_in
 OPERATORS = {
     'D': true_operator,
     '>': greater_operator,
+    '<': lower_operator,
     '=': close_operator,
     'C': crossed_operator,
     'CA': crossed_above_operator,
-    # 'CB': crossed_below_operator,
+    'CB': crossed_below_operator,
 }
 
 
