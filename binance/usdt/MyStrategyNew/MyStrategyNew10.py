@@ -1,4 +1,4 @@
-# MyStrategyNew8
+# MyStrategyNew10
 # Author: @ntsd (Jirawat Boonkumnerd)
 # Github: https://github.com/ntsd
 # V2 Update: Add periods for each timeframe
@@ -7,14 +7,16 @@
 # V7 Update: Optimise by using int parameter
 # V8 Update: sell trend condition use from buy condition
 # V8.1 Update: Remove second timeframe and second indicator to use same as first
+# V9 Update: use all timeframe but optimise periods
+# V10 Update: Add sell parameters and fix operator using cross above only the first timeframe
 # freqtrade download-data --exchange binance -t 5m --days 500
 # freqtrade download-data --exchange binance -t 15m --days 500
 # freqtrade download-data --exchange binance -t 30m --days 500
 # freqtrade download-data --exchange binance -t 1h --days 500
 # freqtrade download-data --exchange binance -t 4h --days 500
 # ShortTradeDurHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, OnlyProfitHyperOptLoss
-# freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 2000 --timerange 20210101-20210813 --strategy MyStrategyNew8
-# freqtrade backtesting --timeframe 5m --timerange 20200807-20210807 --strategy MyStrategyNew8
+# freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 2000 --timerange 20210101-20210813 --strategy MyStrategyNew10
+# freqtrade backtesting --timeframe 5m --timerange 20200807-20210807 --strategy MyStrategyNew10
 
 from freqtrade.strategy import IStrategy, CategoricalParameter, IntParameter, merge_informative_pair
 from pandas import DataFrame, Series
@@ -34,10 +36,15 @@ BASE_TIMEFRAME = TIMEFRAMES[0]
 INFO_TIMEFRAMES = TIMEFRAMES[1:]
 TIMEFRAMES_LEN = len(TIMEFRAMES)
 
-PERIODS = range(10, 100)  # (5, 8, 15, 25, 40, 80)
+PERIODS = []
+n = 5
+for i in range(1, 20):
+    PERIODS.append(n)
+    n += i
+
 PERIODS_LEN = len(PERIODS)
 
-MAX_CONDITIONS = 3
+MAX_CONDITIONS = TIMEFRAMES_LEN
 
 ########################### Indicator ###########################
 
@@ -89,12 +96,12 @@ def crossed_below_operator(dataframe: DataFrame, main_indicator: str, crossed_in
 
 
 OPERATORS = {
-    # 'D': true_operator,
+    'D': true_operator,
     '>': greater_operator,
-    # '=': close_operator,
-    # 'C': crossed_operator,
+    '=': close_operator,
+    'C': crossed_operator,
     'CA': crossed_above_operator,
-    # 'CB': crossed_below_operator,
+    'CB': crossed_below_operator,
 }
 
 
@@ -107,29 +114,32 @@ def apply_operator(dataframe: DataFrame, main_indicator, crossed_indicator, oper
 
 def get_parameter_keys(trend: str, condition_idx: int):
     k_1 = f'{trend}_indicator_{condition_idx}'
-    k_2 = f'{trend}_timeframe_{condition_idx}'
-    k_3 = f'{trend}_fperiod_{condition_idx}'
-    k_4 = f'{trend}_speriod_{condition_idx}'
-    k_5 = f'{trend}_operator_{condition_idx}'
-    return k_1, k_2, k_3, k_4, k_5
+    k_2 = f'{trend}_fperiod_{condition_idx}'
+    k_3 = f'{trend}_speriod_{condition_idx}'
+    return k_1, k_2, k_3
 
 
 def set_hyperopt_parameters(self):
     trend = 'buy'
     for condition_idx in range(MAX_CONDITIONS):
-        k_1, k_2, k_3, k_4, k_5 = get_parameter_keys(trend, condition_idx)
+        k_1, k_2, k_3 = get_parameter_keys(trend, condition_idx)
         setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
-        setattr(self, k_2, IntParameter(0, TIMEFRAMES_LEN - 1, space=trend, default=0))
+        setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
         setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
-        setattr(self, k_4, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
-        setattr(self, k_5, CategoricalParameter(OPERATORS.keys(), space=trend))
 
-    setattr(self, 'sell_condition', IntParameter(0, MAX_CONDITIONS - 1, space='sell', default=0))
+    trend = 'sell'
+    condition_idx = 0
+    k_1, k_2, k_3 = get_parameter_keys(trend, condition_idx)
+    setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
+    setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+    setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+    setattr(self, f'{trend}_timeframe_{condition_idx}', IntParameter(0, TIMEFRAMES_LEN - 1, space=trend, default=0))
+
     return self
 
 
 @set_hyperopt_parameters
-class MyStrategyNew8(IStrategy):
+class MyStrategyNew10(IStrategy):
     # ROI table:
     minimal_roi = {"0": 1}
 
@@ -150,18 +160,24 @@ class MyStrategyNew8(IStrategy):
         print("Self:", self.__dict__)
 
     def get_hyperopt_parameters(self, trend: str, condition_idx: int):
-        k_1, k_2, k_3, k_4, k_5 = get_parameter_keys(trend, condition_idx)
+        k_1, k_2, k_3 = get_parameter_keys(trend, condition_idx)
         indicator = getattr(self, k_1).value
-        timeframe = getattr(self, k_2).value
-        fperiod = getattr(self, k_3).value
-        speriod = getattr(self, k_4).value
-        operator = getattr(self, k_5).value
-        return indicator, timeframe, fperiod, speriod, operator
+        fperiod = getattr(self, k_2).value
+        speriod = getattr(self, k_3).value
+        return indicator, fperiod, speriod
 
     def get_indicators_pair(self, trend: str, condition_idx: int) -> tuple[str, str, str]:
-        indicator, timeframe, fperiod, speriod, operator = self.get_hyperopt_parameters(trend, condition_idx)
-        main_indicator = f'{indicator}_{PERIODS[fperiod]}_{TIMEFRAMES[timeframe]}'
-        crossed_indicator = f'{indicator}_{PERIODS[speriod]}_{TIMEFRAMES[timeframe]}'
+        indicator, fperiod, speriod = self.get_hyperopt_parameters(trend, condition_idx)
+
+        if trend == 'sell':
+            operator = 'CB'
+            sell_timeframe = getattr(self, f'{trend}_timeframe_{condition_idx}').value
+            main_indicator = f'{indicator}_{PERIODS[fperiod]}_{TIMEFRAMES[sell_timeframe]}'
+            crossed_indicator = f'{indicator}_{PERIODS[speriod]}_{TIMEFRAMES[sell_timeframe]}'
+        else:
+            operator = 'CA' if condition_idx == 0 else '>'
+            main_indicator = f'{indicator}_{PERIODS[fperiod]}_{TIMEFRAMES[condition_idx]}'
+            crossed_indicator = f'{indicator}_{PERIODS[speriod]}_{TIMEFRAMES[condition_idx]}'
         return main_indicator, crossed_indicator, operator
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -176,9 +192,9 @@ class MyStrategyNew8(IStrategy):
             # for these mode only add for current parameters setting
             trend = 'buy'
             for condition_idx in range(MAX_CONDITIONS):
-                indicator, timeframe, fperiod, speriod, _ = self.get_hyperopt_parameters(trend, condition_idx)
+                indicator, fperiod, speriod = self.get_hyperopt_parameters(trend, condition_idx)
                 avalidable_indicators.add(indicator)
-                avalidable_info_timeframes.add(TIMEFRAMES[timeframe])
+                avalidable_info_timeframes.add(TIMEFRAMES[condition_idx])
                 avalidable_periods.add(PERIODS[fperiod])
                 avalidable_periods.add(PERIODS[speriod])
         else:
@@ -219,10 +235,10 @@ class MyStrategyNew8(IStrategy):
     def populate_sell_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         conditions = list()
 
-        condition_idx = getattr(self, 'sell_condition').value
-        main_indicator, crossed_indicator, operator = self.get_indicators_pair('buy', condition_idx)
+        condition_idx = 0
+        main_indicator, crossed_indicator, operator = self.get_indicators_pair('sell', condition_idx)
         condition, dataframe = apply_operator(dataframe, main_indicator, crossed_indicator, operator)
-        conditions.append(~condition)  # bitwaise not condition
+        conditions.append(condition)  # bitwaise not condition
 
         if conditions:
             dataframe.loc[reduce(lambda x, y: x & y, conditions), 'sell'] = 1

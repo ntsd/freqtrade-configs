@@ -36,6 +36,9 @@ freqtrade backtesting --timeframe 5m --strategy DevilStra2
 
 # or compare list
 freqtrade backtesting --timeframe 5m --timerange 20210301-20210807 --strategy-list GodStraNew7 DevilStra2 DevilStra3 NostalgiaForInfinityV7 
+
+# plot backtest
+freqtrade plot-dataframe --strategy MyStrategyNew9  --timerange=20210701-20210813
 ```
 
 ## How to run (docker)
