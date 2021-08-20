@@ -14,6 +14,7 @@
 # freqtrade download-data --exchange binance -t 30m --days 500
 # freqtrade download-data --exchange binance -t 1h --days 500
 # freqtrade download-data --exchange binance -t 4h --days 500
+# freqtrade download-data --exchange binance -t 1d --days 500
 # ShortTradeDurHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, OnlyProfitHyperOptLoss
 # freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 2000 --timerange 20210101-20210813 --strategy MyStrategyNew10
 # freqtrade backtesting --timeframe 5m --timerange 20200807-20210807 --strategy MyStrategyNew10
@@ -31,7 +32,7 @@ import numpy as np
 # Timeframes available for the exchange `Binance`: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
 INDICATORS = ('EMA', 'SMA')
 
-TIMEFRAMES = ('5m', '15m', '30m', '1h', '4h')
+TIMEFRAMES = ('5m', '15m', '30m', '1h', '4h', '1d')
 BASE_TIMEFRAME = TIMEFRAMES[0]
 INFO_TIMEFRAMES = TIMEFRAMES[1:]
 TIMEFRAMES_LEN = len(TIMEFRAMES)
@@ -197,6 +198,11 @@ class MyStrategyNew10(IStrategy):
                 avalidable_info_timeframes.add(TIMEFRAMES[condition_idx])
                 avalidable_periods.add(PERIODS[fperiod])
                 avalidable_periods.add(PERIODS[speriod])
+            trend = 'sell'
+            indicator, fperiod, speriod = self.get_hyperopt_parameters(trend, 0)
+            avalidable_indicators.add(indicator)
+            avalidable_periods.add(PERIODS[fperiod])
+            avalidable_periods.add(PERIODS[speriod])
         else:
             avalidable_indicators = INDICATORS
             avalidable_info_timeframes = INFO_TIMEFRAMES
