@@ -7,6 +7,9 @@ git clone -b develop https://github.com/freqtrade/freqtrade.git
 cd freqtrade
 ./setup.sh --install
 
+# Activate env
+source .env/bin/activate
+
 # create profile
 freqtrade new-config --config user_data/config.json
 
