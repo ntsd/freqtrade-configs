@@ -9,7 +9,7 @@
 # V8.1 Update: Remove second timeframe and second indicator to use same as first
 # V9 Update: use all timeframe but optimise periods
 # V10 Update: Add sell parameters and fix operator using cross above only the first timeframe
-# for timeframe in '5m' '15m' '30m' '1h' '4h' '1d'; do
+# for timeframe in '5m' '15m' '1h' '4h' '1d'; do
 #     freqtrade download-data --exchange binance -t $timeframe --days 500
 # done
 # ShortTradeDurHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, OnlyProfitHyperOptLoss
@@ -29,7 +29,7 @@ import numpy as np
 # Timeframes available for the exchange `Binance`: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
 INDICATORS = ('EMA', 'SMA')
 
-TIMEFRAMES = ('5m', '15m', '30m', '1h', '4h', '1d')
+TIMEFRAMES = ('5m', '15m', '1h', '4h', '1d')
 BASE_TIMEFRAME = TIMEFRAMES[0]
 INFO_TIMEFRAMES = TIMEFRAMES[1:]
 TIMEFRAMES_LEN = len(TIMEFRAMES)
