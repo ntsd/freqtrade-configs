@@ -13,7 +13,7 @@
 #     freqtrade download-data --exchange binance -t $timeframe --days 500
 # done
 # ShortTradeDurHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, OnlyProfitHyperOptLoss
-# freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 10000 --timerange 20210101-20210813 --strategy MyStrategyNew10
+# freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 10000 --timerange 20200801-20210813 --strategy MyStrategyNew10
 # freqtrade backtesting --timeframe 5m --timerange 20200807-20210807 --strategy MyStrategyNew10
 
 from freqtrade.strategy import IStrategy, CategoricalParameter, IntParameter, merge_informative_pair
@@ -36,7 +36,7 @@ TIMEFRAMES_LEN = len(TIMEFRAMES)
 
 PERIODS = []
 n = 5
-for i in range(1, 20):
+for i in range(1, 15):
     PERIODS.append(n)
     n += i
 
