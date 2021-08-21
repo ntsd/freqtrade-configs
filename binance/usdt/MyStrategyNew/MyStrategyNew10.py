@@ -9,14 +9,11 @@
 # V8.1 Update: Remove second timeframe and second indicator to use same as first
 # V9 Update: use all timeframe but optimise periods
 # V10 Update: Add sell parameters and fix operator using cross above only the first timeframe
-# freqtrade download-data --exchange binance -t 5m --days 500
-# freqtrade download-data --exchange binance -t 15m --days 500
-# freqtrade download-data --exchange binance -t 30m --days 500
-# freqtrade download-data --exchange binance -t 1h --days 500
-# freqtrade download-data --exchange binance -t 4h --days 500
-# freqtrade download-data --exchange binance -t 1d --days 500
+# for timeframe in '5m' '15m' '30m' '1h' '4h' '1d'; do
+#     freqtrade download-data --exchange binance -t $timeframe --days 500
+# done
 # ShortTradeDurHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, OnlyProfitHyperOptLoss
-# freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 2000 --timerange 20210101-20210813 --strategy MyStrategyNew10
+# freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 10000 --timerange 20210101-20210813 --strategy MyStrategyNew10
 # freqtrade backtesting --timeframe 5m --timerange 20200807-20210807 --strategy MyStrategyNew10
 
 from freqtrade.strategy import IStrategy, CategoricalParameter, IntParameter, merge_informative_pair
