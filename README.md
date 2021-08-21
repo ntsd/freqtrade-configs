@@ -3,11 +3,18 @@
 ## How to optimise parameter
 
 ```bash
+# install python3.9-dev if not avaliable
+sudo apt install python3.9-dev
+
 git clone -b develop https://github.com/freqtrade/freqtrade.git
 cd freqtrade
-./setup.sh --install
 
-# Activate env
+# using system python
+pip3.9 install -r requirements-hyperopt.txt
+python3.9 setup.py install
+
+# using env
+./setup.sh --install
 source .env/bin/activate
 
 # create profile
