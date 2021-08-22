@@ -9,9 +9,10 @@
 # V8.1 Update: Remove second timeframe and second indicator to use same as first
 # V9 Update: use all timeframe but optimise periods
 # V10 Update: Add sell parameters and fix operator using cross above only the first timeframe
-# for timeframe in '5m' '15m' '1h' '4h' '1d'; do
+# for timeframe in '5m' '15m' '1h' '4h'; do
 #     freqtrade download-data --exchange binance -t $timeframe --days 500
 # done
+# freqtrade download-data --exchange binance -t 1d --days 1000
 # ShortTradeDurHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, OnlyProfitHyperOptLoss
 # freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 10000 --timerange 20200801-20210820 --strategy MyStrategyNew10
 # freqtrade backtesting --timeframe 5m --timerange 20200801-20210820 --strategy MyStrategyNew10
@@ -138,6 +139,8 @@ def set_hyperopt_parameters(self):
 
 @set_hyperopt_parameters
 class MyStrategyNew10(IStrategy):
+    INTERFACE_VERSION = 2
+
     # ROI table:
     minimal_roi = {"0": 1}
 
@@ -152,6 +155,17 @@ class MyStrategyNew10(IStrategy):
 
     # Timeframe
     timeframe = BASE_TIMEFRAME
+
+    # Run "populate_indicators()" only for new candle.
+    process_only_new_candles = True
+
+    # These values can be overridden in the "ask_strategy" section in the config.
+    use_sell_signal = True
+    sell_profit_only = True
+    ignore_roi_if_buy_signal = True
+
+    # Number of candles the strategy requires before producing valid signals
+    startup_candle_count: int = 500
 
     def __init__(self, config: dict) -> None:
         super().__init__(config)
