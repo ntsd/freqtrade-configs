@@ -27,9 +27,9 @@ import numpy as np
 
 ########################### Static Parameters ###########################
 
-# Timeframes available for the exchange `Binance`: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
 INDICATORS = ('EMA', 'SMA')
 
+# Timeframes available for the exchange `Binance`: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
 TIMEFRAMES = ('5m', '15m', '1h', '4h', '1d')
 BASE_TIMEFRAME = TIMEFRAMES[0]
 INFO_TIMEFRAMES = TIMEFRAMES[1:]
@@ -45,6 +45,30 @@ for i in range(1, 15):
 PERIODS_LEN = len(PERIODS)
 
 MAX_CONDITIONS = TIMEFRAMES_LEN
+
+# Default parameter
+buy = {
+    "buy_fperiod_0": 11,
+    "buy_fperiod_1": 0,
+    "buy_fperiod_2": 4,
+    "buy_fperiod_3": 4,
+    "buy_fperiod_4": 2,
+    "buy_indicator_0": "SMA",
+    "buy_indicator_1": "EMA",
+    "buy_indicator_2": "SMA",
+    "buy_indicator_3": "EMA",
+    "buy_indicator_4": "SMA",
+    "buy_speriod_0": 0,
+    "buy_speriod_1": 1,
+    "buy_speriod_2": 10,
+    "buy_speriod_3": 7,
+    "buy_speriod_4": 5
+}
+sell = {
+    "sell_fperiod_0": 1,
+    "sell_indicator_0": "EMA",
+    "sell_speriod_0": 10
+}
 
 ########################### Indicator ###########################
 
@@ -113,30 +137,6 @@ def apply_operator(dataframe: DataFrame, main_indicator, crossed_indicator, oper
 ########################### HyperOpt Parameters ###########################
 
 
-buy = {
-    "buy_fperiod_0": 1,
-    "buy_fperiod_1": 7,
-    "buy_fperiod_2": 3,
-    "buy_fperiod_3": 2,
-    "buy_fperiod_4": 2,
-    "buy_indicator_0": "EMA",
-    "buy_indicator_1": "EMA",
-    "buy_indicator_2": "SMA",
-    "buy_indicator_3": "SMA",
-    "buy_indicator_4": "EMA",
-    "buy_speriod_0": 13,
-    "buy_speriod_1": 13,
-    "buy_speriod_2": 6,
-    "buy_speriod_3": 13,
-    "buy_speriod_4": 5
-}
-sell = {
-    "sell_fperiod_0": 6,
-    "sell_indicator_0": "EMA",
-    "sell_speriod_0": 10,
-}
-
-
 class DefaultValue:
     def __init__(self, value) -> None:
         self.value = value
@@ -157,7 +157,7 @@ def set_hyperopt_parameters(self):
             setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
             setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
             setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
-        else:
+        else:  # use default for 1 day timeframe
             setattr(self, k_1, DefaultValue(buy[k_1]))
             setattr(self, k_2, DefaultValue(buy[k_2]))
             setattr(self, k_3, DefaultValue(buy[k_3]))
