@@ -13,7 +13,7 @@
 #     freqtrade download-data --exchange binance -t $timeframe --days 500
 # done
 # freqtrade download-data --exchange binance -t 1d --days 1000
-# ShortTradeDurHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, OnlyProfitHyperOptLoss
+# ShortTradeDurHyperOptLoss, OnlyProfitHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, SortinoHyperOptLoss, SortinoHyperOptLossDaily
 # freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 10000 --timerange 20200801-20210820 --strategy MyStrategyNew10
 # freqtrade backtesting --timeframe 5m --timerange 20200801-20210820 --strategy MyStrategyNew10
 
@@ -59,7 +59,8 @@ def apply_indicator(dataframe: DataFrame, key: str, indicator: str, period: int)
         return
 
     result = getattr(ta, indicator)(dataframe, timeperiod=period)
-    dataframe[key] = normalize(result)
+    # dataframe[key] = normalize(result)
+    dataframe[key] = result
 
 ########################### Operators ###########################
 
@@ -112,6 +113,35 @@ def apply_operator(dataframe: DataFrame, main_indicator, crossed_indicator, oper
 ########################### HyperOpt Parameters ###########################
 
 
+buy = {
+    "buy_fperiod_0": 1,
+    "buy_fperiod_1": 7,
+    "buy_fperiod_2": 3,
+    "buy_fperiod_3": 2,
+    "buy_fperiod_4": 2,
+    "buy_indicator_0": "EMA",
+    "buy_indicator_1": "EMA",
+    "buy_indicator_2": "SMA",
+    "buy_indicator_3": "SMA",
+    "buy_indicator_4": "EMA",
+    "buy_speriod_0": 13,
+    "buy_speriod_1": 13,
+    "buy_speriod_2": 6,
+    "buy_speriod_3": 13,
+    "buy_speriod_4": 5
+}
+sell = {
+    "sell_fperiod_0": 6,
+    "sell_indicator_0": "EMA",
+    "sell_speriod_0": 10,
+}
+
+
+class DefaultValue:
+    def __init__(self, value) -> None:
+        self.value = value
+
+
 def get_parameter_keys(trend: str, condition_idx: int):
     k_1 = f'{trend}_indicator_{condition_idx}'
     k_2 = f'{trend}_fperiod_{condition_idx}'
@@ -123,16 +153,24 @@ def set_hyperopt_parameters(self):
     trend = 'buy'
     for condition_idx in range(MAX_CONDITIONS):
         k_1, k_2, k_3 = get_parameter_keys(trend, condition_idx)
-        setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
-        setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
-        setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+        if condition_idx < 4:
+            setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
+            setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+            setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+        else:
+            setattr(self, k_1, DefaultValue(buy[k_1]))
+            setattr(self, k_2, DefaultValue(buy[k_2]))
+            setattr(self, k_3, DefaultValue(buy[k_3]))
 
     trend = 'sell'
     condition_idx = 0
     k_1, k_2, k_3 = get_parameter_keys(trend, condition_idx)
-    setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
-    setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
-    setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+    # setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
+    # setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+    # setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+    setattr(self, k_1, DefaultValue(sell[k_1]))
+    setattr(self, k_2, DefaultValue(sell[k_2]))
+    setattr(self, k_3, DefaultValue(sell[k_3]))
 
     return self
 
