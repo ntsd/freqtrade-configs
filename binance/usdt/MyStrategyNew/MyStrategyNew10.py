@@ -9,9 +9,7 @@
 # V8.1 Update: Remove second timeframe and second indicator to use same as first
 # V9 Update: use all timeframe but optimise periods
 # V10 Update: Add sell parameters and fix operator using cross above only the first timeframe
-# for timeframe in '5m' '15m' '1h' '4h'; do
-#     freqtrade download-data --exchange binance -t $timeframe --days 500
-# done
+# freqtrade download-data --exchange binance -t 5m 15m 1h 4h --days 500
 # freqtrade download-data --exchange binance -t 1d --days 1000
 # ShortTradeDurHyperOptLoss, OnlyProfitHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, SortinoHyperOptLoss, SortinoHyperOptLossDaily
 # freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 10000 --timerange 20200801-20210820 --strategy MyStrategyNew10
@@ -104,19 +102,22 @@ def close_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator:
 def crossed_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: str):
     return (
         (qtpylib.crossed_below(dataframe[main_indicator], dataframe[crossed_indicator])) |
-        (qtpylib.crossed_above(dataframe[main_indicator], dataframe[crossed_indicator]))
+        (qtpylib.crossed_above(
+            dataframe[main_indicator], dataframe[crossed_indicator]))
     )
 
 
 def crossed_above_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: str):
     return (
-        qtpylib.crossed_above(dataframe[main_indicator], dataframe[crossed_indicator])
+        qtpylib.crossed_above(
+            dataframe[main_indicator], dataframe[crossed_indicator])
     )
 
 
 def crossed_below_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: str):
     return (
-        qtpylib.crossed_below(dataframe[main_indicator], dataframe[crossed_indicator])
+        qtpylib.crossed_below(
+            dataframe[main_indicator], dataframe[crossed_indicator])
     )
 
 
@@ -131,7 +132,8 @@ OPERATORS = {
 
 
 def apply_operator(dataframe: DataFrame, main_indicator, crossed_indicator, operator) -> tuple[Series, DataFrame]:
-    condition = OPERATORS[operator](dataframe, main_indicator, crossed_indicator)
+    condition = OPERATORS[operator](
+        dataframe, main_indicator, crossed_indicator)
     return condition, dataframe
 
 ########################### HyperOpt Parameters ###########################
@@ -155,8 +157,10 @@ def set_hyperopt_parameters(self):
         k_1, k_2, k_3 = get_parameter_keys(trend, condition_idx)
         if condition_idx < 4:
             setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
-            setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
-            setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+            setattr(self, k_2, IntParameter(
+                0, PERIODS_LEN - 1, space=trend, default=0))
+            setattr(self, k_3, IntParameter(
+                0, PERIODS_LEN - 1, space=trend, default=0))
         else:  # use default for 1 day timeframe
             setattr(self, k_1, DefaultValue(buy[k_1]))
             setattr(self, k_2, DefaultValue(buy[k_2]))
@@ -165,12 +169,12 @@ def set_hyperopt_parameters(self):
     trend = 'sell'
     condition_idx = 0
     k_1, k_2, k_3 = get_parameter_keys(trend, condition_idx)
-    # setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
-    # setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
-    # setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
-    setattr(self, k_1, DefaultValue(sell[k_1]))
-    setattr(self, k_2, DefaultValue(sell[k_2]))
-    setattr(self, k_3, DefaultValue(sell[k_3]))
+    setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
+    setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+    setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+    # setattr(self, k_1, DefaultValue(sell[k_1]))
+    # setattr(self, k_2, DefaultValue(sell[k_2]))
+    # setattr(self, k_3, DefaultValue(sell[k_3]))
 
     return self
 
@@ -217,7 +221,8 @@ class MyStrategyNew10(IStrategy):
         return indicator, fperiod, speriod
 
     def get_indicators_pair(self, trend: str, condition_idx: int) -> tuple[str, str, str]:
-        indicator, fperiod, speriod = self.get_hyperopt_parameters(trend, condition_idx)
+        indicator, fperiod, speriod = self.get_hyperopt_parameters(
+            trend, condition_idx)
 
         if fperiod == speriod:
             return None, None, None
@@ -245,13 +250,15 @@ class MyStrategyNew10(IStrategy):
             # for these mode only add for current parameters setting
             trend = 'buy'
             for condition_idx in range(MAX_CONDITIONS):
-                indicator, fperiod, speriod = self.get_hyperopt_parameters(trend, condition_idx)
+                indicator, fperiod, speriod = self.get_hyperopt_parameters(
+                    trend, condition_idx)
                 avalidable_indicators.add(indicator)
                 avalidable_info_timeframes.add(TIMEFRAMES[condition_idx])
                 avalidable_periods.add(PERIODS[fperiod])
                 avalidable_periods.add(PERIODS[speriod])
             trend = 'sell'
-            indicator, fperiod, speriod = self.get_hyperopt_parameters(trend, 0)
+            indicator, fperiod, speriod = self.get_hyperopt_parameters(
+                trend, 0)
             avalidable_indicators.add(indicator)
             avalidable_periods.add(PERIODS[fperiod])
             avalidable_periods.add(PERIODS[speriod])
@@ -262,16 +269,20 @@ class MyStrategyNew10(IStrategy):
 
         # apply info timeframe indicator
         for info_timeframe in avalidable_info_timeframes:
-            info_dataframe = self.dp.get_pair_dataframe(pair=metadata['pair'], timeframe=info_timeframe)
+            info_dataframe = self.dp.get_pair_dataframe(
+                pair=metadata['pair'], timeframe=info_timeframe)
             for indicator in avalidable_indicators:
                 for period in avalidable_periods:
-                    apply_indicator(info_dataframe, f'{indicator}_{period}', indicator, period)
-            dataframe = merge_informative_pair(dataframe, info_dataframe, self.timeframe, info_timeframe, ffill=True)
+                    apply_indicator(
+                        info_dataframe, f'{indicator}_{period}', indicator, period)
+            dataframe = merge_informative_pair(
+                dataframe, info_dataframe, self.timeframe, info_timeframe, ffill=True)
 
         # apply base timeframe indicator
         for indicator in avalidable_indicators:
             for period in avalidable_periods:
-                apply_indicator(dataframe, f'{indicator}_{period}_{BASE_TIMEFRAME}', indicator, period)
+                apply_indicator(
+                    dataframe, f'{indicator}_{period}_{BASE_TIMEFRAME}', indicator, period)
 
         return dataframe
 
@@ -281,10 +292,12 @@ class MyStrategyNew10(IStrategy):
         conditions = list()
 
         for condition_idx in range(MAX_CONDITIONS):
-            main_indicator, crossed_indicator, operator = self.get_indicators_pair(trend, condition_idx)
+            main_indicator, crossed_indicator, operator = self.get_indicators_pair(
+                trend, condition_idx)
             if not operator:
                 continue
-            condition, dataframe = apply_operator(dataframe, main_indicator, crossed_indicator, operator)
+            condition, dataframe = apply_operator(
+                dataframe, main_indicator, crossed_indicator, operator)
             conditions.append(condition)
 
         if conditions:
@@ -296,9 +309,11 @@ class MyStrategyNew10(IStrategy):
         conditions = list()
 
         condition_idx = 0
-        main_indicator, crossed_indicator, operator = self.get_indicators_pair('sell', condition_idx)
+        main_indicator, crossed_indicator, operator = self.get_indicators_pair(
+            'sell', condition_idx)
         if operator:
-            condition, dataframe = apply_operator(dataframe, main_indicator, crossed_indicator, operator)
+            condition, dataframe = apply_operator(
+                dataframe, main_indicator, crossed_indicator, operator)
             conditions.append(condition)  # bitwaise not condition
 
         if conditions:
