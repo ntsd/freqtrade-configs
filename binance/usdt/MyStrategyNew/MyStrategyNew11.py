@@ -101,6 +101,10 @@ def greater_operator(dataframe: DataFrame, main_indicator: str, crossed_indicato
     return dataframe[main_indicator] > dataframe[crossed_indicator]
 
 
+def lower_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: str):
+    return dataframe[main_indicator] < dataframe[crossed_indicator]
+
+
 def true_operator(dataframe: DataFrame, main_indicator: str, crossed_indicator: str):
     return dataframe["volume"] > 10
 
@@ -126,6 +130,7 @@ def crossed_below_operator(dataframe: DataFrame, main_indicator: str, crossed_in
 OPERATORS = {
     "D": true_operator,
     ">": greater_operator,
+    "<": lower_operator,
     "=": close_operator,
     "C": crossed_operator,
     "CA": crossed_above_operator,
