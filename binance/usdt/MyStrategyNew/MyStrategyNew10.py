@@ -183,6 +183,29 @@ def set_hyperopt_parameters(self):
 class MyStrategyNew10(IStrategy):
     INTERFACE_VERSION = 2
 
+    buy = {
+        "buy_fperiod_0": 11,
+        "buy_fperiod_1": 0,
+        "buy_fperiod_2": 4,
+        "buy_fperiod_3": 4,
+        "buy_fperiod_4": 2,
+        "buy_indicator_0": "SMA",
+        "buy_indicator_1": "EMA",
+        "buy_indicator_2": "SMA",
+        "buy_indicator_3": "EMA",
+        "buy_indicator_4": "SMA",
+        "buy_speriod_0": 0,
+        "buy_speriod_1": 1,
+        "buy_speriod_2": 10,
+        "buy_speriod_3": 7,
+        "buy_speriod_4": 5
+    }
+    sell = {
+        "sell_fperiod_0": 1,
+        "sell_indicator_0": "EMA",
+        "sell_speriod_0": 10
+    }
+
     # ROI table:
     minimal_roi = {"0": 1}
 
