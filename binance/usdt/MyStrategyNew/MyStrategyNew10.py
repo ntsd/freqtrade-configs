@@ -28,7 +28,7 @@ import numpy as np
 INDICATORS = ("EMA", "SMA")
 
 # Timeframes available for the exchange `Binance`: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
-TIMEFRAMES = ("5m", "15m", "1h", "4h", "1d")
+TIMEFRAMES = ("5m", "15m", "1h", "4h")
 BASE_TIMEFRAME = TIMEFRAMES[0]
 INFO_TIMEFRAMES = TIMEFRAMES[1:]
 TIMEFRAMES_LEN = len(TIMEFRAMES)
@@ -50,17 +50,14 @@ buy = {
     "buy_fperiod_1": 0,
     "buy_fperiod_2": 4,
     "buy_fperiod_3": 4,
-    "buy_fperiod_4": 2,
     "buy_indicator_0": "SMA",
     "buy_indicator_1": "EMA",
     "buy_indicator_2": "SMA",
     "buy_indicator_3": "EMA",
-    "buy_indicator_4": "SMA",
     "buy_speriod_0": 0,
     "buy_speriod_1": 1,
     "buy_speriod_2": 10,
     "buy_speriod_3": 7,
-    "buy_speriod_4": 5,
 }
 sell = {"sell_fperiod_0": 1, "sell_indicator_0": "EMA", "sell_speriod_0": 10}
 
