@@ -31,23 +31,23 @@ freqtrade download-data --exchange binance -t 5m --days 500
 # SharpeHyperOptLossDaily (optimizes Sharpe Ratio calculated on daily trade returns relative to standard deviation)
 # SortinoHyperOptLoss (optimizes Sortino Ratio calculated on trade returns relative to downside standard deviation)
 # SortinoHyperOptLossDaily (optimizes Sortino Ratio calculated on daily trade returns relative to downside standard deviation)
-freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --timerange 20210101-20210807 --timeframe 5m --strategy GodStra_All_Indicator
+freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --timerange 20210101-20210807 --timeframe 5m --strategy MyStrategyNew10 --print-all
 
 # update parameters to default config inside strategy python file
 
 # use hyperopt to optimise roi and trailing configs parameters
-freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20210101-20210807 --timeframe 5m --strategy GodStra_All_Indicator
+freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20210101-20210807 --timeframe 5m --strategy MyStrategyNew10 --print-all
 
 # update minimal_roi and trailing_stop to config
 
 # backtesting
-freqtrade backtesting --timeframe 5m --strategy DevilStra2 
+freqtrade backtesting --timeframe 5m --strategy MyStrategyNew10 
 
 # or compare list
-freqtrade backtesting --timeframe 5m --timerange 20210301-20210807 --strategy-list GodStraNew7 DevilStra2 DevilStra3 NostalgiaForInfinityV7 
+freqtrade backtesting --timeframe 5m --timerange 20210301-20210807 --strategy-list MyStrategyNew10 NostalgiaForInfinityV7 
 
 # plot backtest
-freqtrade plot-dataframe --strategy MyStrategyNew9  --timerange=20210701-20210813
+freqtrade plot-dataframe --strategy MyStrategyNew10  --timerange=20210701-20210813
 ```
 
 ## How to run (docker)

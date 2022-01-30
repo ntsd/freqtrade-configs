@@ -162,16 +162,16 @@ def set_hyperopt_parameters(self):
     trend = "buy"
     for condition_idx in range(MAX_BUY_CONDITIONS):
         k_1, k_2, k_3 = get_parameter_keys(trend, condition_idx)
-        setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend, default=buy[k_1]))
-        setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=buy[k_2]))
-        setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=buy[k_3]))
+        setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
+        setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+        setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
 
     trend = "sell"
     for condition_idx in range(MAX_SELL_CONDITIONS):
         k_1, k_2, k_3 = get_parameter_keys(trend, condition_idx)
-        setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend, default=sell[k_1]))
-        setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=sell[k_2]))
-        setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=sell[k_3]))
+        setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend))
+        setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
+        setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=0))
 
     return self
 
