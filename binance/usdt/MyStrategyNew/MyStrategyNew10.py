@@ -10,7 +10,6 @@
 # V9 Update: use all timeframe but optimise periods
 # V10 Update: Add sell parameters and fix operator using cross above only the first timeframe
 # freqtrade download-data --exchange binance -t 5m 15m 1h 4h --days 500
-# freqtrade download-data --exchange binance -t 1d --days 1000
 # ShortTradeDurHyperOptLoss, OnlyProfitHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, SortinoHyperOptLoss, SortinoHyperOptLossDaily
 # freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 10000 --timerange 20200801-20210820 --strategy MyStrategyNew10
 # freqtrade backtesting --timeframe 5m --timerange 20200801-20210820 --strategy MyStrategyNew10
