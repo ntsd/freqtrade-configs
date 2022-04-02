@@ -1,0 +1,29 @@
+{
+    "pair_whitelist": [
+        "BTC/USDT",
+        "ETH/USDT",
+        "LUNA/USDT",
+        "XRP/USDT",
+        "CHZ/USDT",
+        "FTM/USDT",
+        "GALA/USDT",
+        "ATOM/USDT",
+        "SOL/USDT",
+        "AVAX/USDT",
+        "1000SHIB/USDT",
+        "WAVES/USDT",
+        "ADA/USDT",
+        "NEAR/USDT",
+        "DOT/USDT",
+        "SAND/USDT",
+        "MANA/USDT",
+        "MATIC/USDT",
+        "RUNE/USDT",
+        "ENS/USDT",
+        "AXS/USDT",
+        "LTC/USDT",
+        "LINK/USDT",
+        "PEOPLE/USDT",
+        "DOGE/USDT"
+    ]
+}
