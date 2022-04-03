@@ -1,12 +1,13 @@
 # BelieveInCoin
+# This strategy is for people who believe in a coin. Best for 1 pair and 1 max open trade.
 # Author: @ntsd (Jirawat Boonkumnerd)
 # Github: https://github.com/ntsd
 # freqtrade download-data --exchange binanceusdm -t 5m 15m 1h 4h --days 500
 # freqtrade download-data --exchange binanceusdm -t 1d --days 1000
 # ProfitDrawDownHyperOptLoss, ShortTradeDurHyperOptLoss, OnlyProfitHyperOptLoss, SharpeHyperOptLoss, SharpeHyperOptLossDaily, SortinoHyperOptLoss, SortinoHyperOptLossDaily
 # freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces buy sell --timeframe 5m -e 10000 --print-all --strategy BelieveInCoin -j 12
-# freqtrade backtesting --timeframe 5m --strategy BelieveInCoin
-# freqtrade backtesting --timeframe 5m --strategy-list BelieveInCoin NostalgiaForInfinityX
+# freqtrade backtesting --timeframe 5m --strategy BelieveInCoin --timerange=20220101-
+# freqtrade backtesting --timeframe 5m --strategy-list BelieveInCoin NostalgiaForInfinityX --timerange=20220101-
 
 from freqtrade.strategy import IStrategy, CategoricalParameter, IntParameter, merge_informative_pair
 from freqtrade.enums import SignalType
@@ -43,7 +44,8 @@ PERIODS_LEN = len(PERIODS)
 
 
 ########################### Default hyperopt parameter ###########################
-buy = {
+# Buy hyperspace params:
+buy_params = {
     "buy_fperiod_0": 6,
     "buy_fperiod_1": 11,
     "buy_fperiod_2": 9,
@@ -57,7 +59,9 @@ buy = {
     "buy_speriod_2": 12,
     "buy_speriod_3": 13,
 }
-sell = {
+
+# Sell hyperspace params:
+sell_params = {
     "sell_fperiod_0": 9,
     "sell_fperiod_1": 1,
     "sell_fperiod_2": 3,
@@ -154,25 +158,25 @@ def set_hyperopt_parameters(self):
     for condition_idx in range(BUY_MAX_CONDITIONS):
         k_1, k_2, k_3 = get_hyperopt_parameter_keys(trend, condition_idx)
         if IS_HYPEROPT:
-            setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend, default=buy[k_1]))
-            setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=buy[k_2]))
-            setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=buy[k_3]))
+            setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend, default=buy_params[k_1]))
+            setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=buy_params[k_2]))
+            setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=buy_params[k_3]))
         else:
-            setattr(self, k_1, DefaultValue(buy[k_1]))
-            setattr(self, k_2, DefaultValue(buy[k_2]))
-            setattr(self, k_3, DefaultValue(buy[k_3]))
+            setattr(self, k_1, DefaultValue(buy_params[k_1]))
+            setattr(self, k_2, DefaultValue(buy_params[k_2]))
+            setattr(self, k_3, DefaultValue(buy_params[k_3]))
 
     trend = "sell"
     for condition_idx in range(SELL_MAX_CONDITIONS):
         k_1, k_2, k_3 = get_hyperopt_parameter_keys(trend, condition_idx)
         if IS_HYPEROPT:
-            setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend, default=sell[k_1]))
-            setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=sell[k_2]))
-            setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=sell[k_3]))
+            setattr(self, k_1, CategoricalParameter(INDICATORS, space=trend, default=sell_params[k_1]))
+            setattr(self, k_2, IntParameter(0, PERIODS_LEN - 1, space=trend, default=sell_params[k_2]))
+            setattr(self, k_3, IntParameter(0, PERIODS_LEN - 1, space=trend, default=sell_params[k_3]))
         else:
-            setattr(self, k_1, DefaultValue(sell[k_1]))
-            setattr(self, k_2, DefaultValue(sell[k_2]))
-            setattr(self, k_3, DefaultValue(sell[k_3]))
+            setattr(self, k_1, DefaultValue(sell_params[k_1]))
+            setattr(self, k_2, DefaultValue(sell_params[k_2]))
+            setattr(self, k_3, DefaultValue(sell_params[k_3]))
 
     return self
 
