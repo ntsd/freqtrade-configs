@@ -25,29 +25,23 @@ freqtrade download-data --exchange binance -t 5m --days 500
 
 # use hyperopt to optimise strategy parameters by buy and sell signal
 # read this for the loss function https://www.freqtrade.io/en/stable/hyperopt/#loss-functions
-# ShortTradeDurHyperOptLoss (default legacy Freqtrade hyperoptimization loss function) - Mostly for short trade duration and avoiding losses.
-# OnlyProfitHyperOptLoss (which takes only amount of profit into consideration)
-# SharpeHyperOptLoss (optimizes Sharpe Ratio calculated on trade returns relative to standard deviation)
-# SharpeHyperOptLossDaily (optimizes Sharpe Ratio calculated on daily trade returns relative to standard deviation)
-# SortinoHyperOptLoss (optimizes Sortino Ratio calculated on trade returns relative to downside standard deviation)
-# SortinoHyperOptLossDaily (optimizes Sortino Ratio calculated on daily trade returns relative to downside standard deviation)
-freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --timerange 20210101-20210807 --timeframe 5m --strategy GodStra_All_Indicator
+freqtrade hyperopt --hyperopt-loss SharpeHyperOptLoss --spaces buy sell --timerange 20210101- --timeframe 5m --strategy BelieveInCoin
 
 # update parameters to default config inside strategy python file
 
 # use hyperopt to optimise roi and trailing configs parameters
-freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20210101-20210807 --timeframe 5m --strategy GodStra_All_Indicator
+freqtrade hyperopt --hyperopt-loss OnlyProfitHyperOptLoss --spaces roi trailing --timerange 20210101- --timeframe 5m --strategy BelieveInCoin
 
 # update minimal_roi and trailing_stop to config
 
 # backtesting
-freqtrade backtesting --timeframe 5m --strategy DevilStra2 
+freqtrade backtesting --timeframe 5m --strategy BelieveInCoin 
 
 # or compare list
-freqtrade backtesting --timeframe 5m --timerange 20210301-20210807 --strategy-list GodStraNew7 DevilStra2 DevilStra3 NostalgiaForInfinityV7 
+freqtrade backtesting --timeframe 5m --timerange 20210301- --strategy-list BelieveInCoin NostalgiaForInfinityX
 
 # plot backtest
-freqtrade plot-dataframe --strategy MyStrategyNew9  --timerange=20210701-20210813
+freqtrade plot-dataframe --strategy BelieveInCoin --timerange=20210701-
 ```
 
 ## How to run (docker)
@@ -107,7 +101,7 @@ use `docker-compose run freqtrade test-pairlist` to check the pairlist
 
 ref <https://www.freqtrade.io/en/stable/includes/pairlists/>
 
-example
+Example volume pair list
 
 ```json
 "exchange": {
